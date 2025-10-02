@@ -1,0 +1,98 @@
+name: Deployment (TINGLE)
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/deployment.yaml"
+      - "src/**"
+
+permissions:
+  id-token: write
+  deployments: write
+  contents: read
+
+jobs:
+  sync:
+    runs-on:
+      - runs-on=${{ github.run_id }}
+      - runner=8cpu-linux-x64
+
+    env:
+      DIR_ORIGIN: ./dist
+      BUILD_MODE: production
+
+      S3_BUCKET: S3_BUCKET
+      CF_DIST_ID: CLOUDFRONT_DIST_ID
+      CF_DOMAIN: CF_DOMAIN
+
+      AWS_REGION: ap-northeast-2
+      AWS_ROLE: arn:aws:iam::IAM_ROLE_ARN:role/IAM_ROLE_NAME
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v3
+
+      - uses: altinukshini/deployment-action@releases/v1
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: "${{ github.token }}"
+          target_url: ${{ env.CF_DOMAIN }}
+          environment: ${{ env.BUILD_MODE }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE }}
+          role-session-name: Deployment
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: |
+          pnpm run build --mode ${{ env.BUILD_MODE }}
+
+      - name: S3 Deploy
+        env:
+          AWS_REGION: ${{ env.AWS_REGION }}
+        run: |
+          aws s3 sync ${{ env.DIR_ORIGIN }} s3://${{ env.S3_BUCKET }}
+
+      - name: Invalidate CloudFront Cache
+        env:
+          AWS_REGION: ${{ env.AWS_REGION }}
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ env.CF_DIST_ID }} --paths "/*"
+
+      - name: Update deployment Status (success)
+        if: success()
+        uses: altinukshini/deployment-status@releases/v1
+        with:
+          state: "success"
+          token: "${{ github.token }}"
+          target_url: ${{ env.CF_DOMAIN }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - name: Update deployment Status (failure)
+        if: failure()
+        uses: altinukshini/deployment-status@releases/v1
+        with:
+          state: "failure"
+          token: "${{ github.token }}"
+          target_url: ${{ env.CF_DOMAIN }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
