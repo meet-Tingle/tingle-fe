@@ -1,4 +1,4 @@
-name: Deployment (TINGLE)
+name: Deployment TINGLE
 
 on:
   workflow_dispatch: {}
@@ -15,20 +15,17 @@ permissions:
 
 jobs:
   sync:
-    runs-on:
-      - runs-on=${{ github.run_id }}
-      - runner=8cpu-linux-x64
+    runs-on: ubuntu-latest
 
     env:
       DIR_ORIGIN: ./dist
       BUILD_MODE: production
 
-      S3_BUCKET: S3_BUCKET
-      CF_DIST_ID: CLOUDFRONT_DIST_ID
-      CF_DOMAIN: CF_DOMAIN
-
-      AWS_REGION: ap-northeast-2
-      AWS_ROLE: arn:aws:iam::IAM_ROLE_ARN:role/IAM_ROLE_NAME
+      S3_BUCKET: ${{ secrets.S3_BUCKET }}
+      CF_DIST_ID: ${{ secrets.CF_DIST_ID }}
+      CF_DOMAIN: ${{ secrets.CF_DOMAIN }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      AWS_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_NAME }}
 
     steps:
       - name: Clone Repository
@@ -48,6 +45,9 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ env.AWS_ROLE }}
           role-session-name: Deployment
+
+      - name: Check AWS CLI
+        run: aws --version
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
