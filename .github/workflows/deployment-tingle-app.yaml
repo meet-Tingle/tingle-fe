@@ -1,12 +1,12 @@
-name: Deployment TINGLE
+name: Deployment TINGLE app
 
 on:
   workflow_dispatch: {}
   push:
     branches: ["main"]
     paths:
-      - ".github/workflows/deployment.yaml"
-      - "src/**"
+      - ".github/workflows/deployment-tingle-app.yaml"
+      - "apps/tingle-app/**"
 
 permissions:
   id-token: write
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DIR_ORIGIN: ./dist
+      DIR_ORIGIN: ./apps/tingle-app/dist
       BUILD_MODE: production
 
       S3_BUCKET: ${{ secrets.S3_BUCKET }}
