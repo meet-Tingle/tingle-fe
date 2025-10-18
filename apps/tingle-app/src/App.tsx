@@ -9,8 +9,8 @@ function App() {
       </div>
       <h1>TINGLE</h1>
       <p className="description">
-        Tingle is a platform for university students to find and connect with
-        other students.
+        Tingle is a matching platform based on university student verification
+        for university students to find and connect with other students.
       </p>
       <PWABadge />
     </>
