@@ -11,7 +11,8 @@
   "dependencies": {
     "react": "catalog:",
     "react-dom": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@tanstack/react-query": "catalog:"
   },
   "devDependencies": {
     "@types/node": "^20",
