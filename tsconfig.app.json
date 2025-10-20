@@ -18,7 +18,7 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@ui/*": ["./packages/ui/*"]
+      "@tingle/ui": ["./packages/ui"]
     },
 
     /* Linting */

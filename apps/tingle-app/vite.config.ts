@@ -1,9 +1,16 @@
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import react from "@vitejs/plugin-react";
+import path from "path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      "@tingle/ui": path.resolve(__dirname, "../../packages/ui"),
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -17,7 +24,6 @@ export default defineConfig({
         disabled: false,
         config: true,
       },
-
       manifest: {
         name: "tingle",
         short_name: "tingle",
@@ -25,11 +31,9 @@ export default defineConfig({
           "Tingle - A matching platform based on university student verification",
         theme_color: "#ffffff",
       },
-
       injectManifest: {
         globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
       },
-
       devOptions: {
         enabled: true,
         navigateFallback: "index.html",
@@ -37,5 +41,6 @@ export default defineConfig({
         type: "module",
       },
     }),
+    vanillaExtractPlugin({ identifiers: "debug" }),
   ],
 });

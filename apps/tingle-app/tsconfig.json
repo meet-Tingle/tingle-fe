@@ -1,3 +1,10 @@
 {
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@tingle/ui": ["../../packages/ui"]
+    }
+  },
+  "include": ["src"]
 }
