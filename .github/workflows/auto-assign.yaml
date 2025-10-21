@@ -1,5 +1,8 @@
 name: auto-Assign Reviewer and Assignee
 
+permissions:
+  issues: write
+
 on:
   pull_request:
     types: [opened, ready_for_review]
@@ -13,6 +16,7 @@ jobs:
     steps:
       - uses: hkusu/review-assign-action@v1
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }} 
           assignees: ${{ github.actor }}
           reviewers: ${{ vars.REVIEWERS }}
 
