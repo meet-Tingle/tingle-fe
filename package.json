@@ -1,6 +1,10 @@
 {
   "name": "tingle",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -12,7 +16,13 @@
     "pre-commit": "pnpm exec lint-staged"
   },
   "lint-staged": {
-    "*.{css,js,json,jsx,ts,tsx}": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true"
+    "*.{css,js,json,jsx,ts,tsx}": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true",
+    "package.json": "sort-package-json",
+    "*.{png,jpg,jpeg,svg}": "pnpm exec imagemin-lint-staged",
+    "*.ts?(x)": "tsc --noEmit --skipLibCheck"
+  },
+  "dependencies": {
+    "sort-package-json": "^3.4.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
@@ -24,9 +34,5 @@
     "simple-git-hooks": "^2.13.1",
     "turbo": "^2.5.5"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "packageManager": "pnpm@9.5.0"
 }
