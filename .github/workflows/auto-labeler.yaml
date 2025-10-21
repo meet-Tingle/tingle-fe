@@ -1,8 +1,5 @@
 name: Auto Label PR
 
-permissions:
-  issues: write
-
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize, ready_for_review]
@@ -86,6 +83,10 @@ jobs:
   add-labels:
     needs: detect-changes
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
       - uses: actions/github-script@v7
         with:
