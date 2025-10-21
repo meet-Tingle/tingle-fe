@@ -1,8 +1,5 @@
 name: auto-Assign Reviewer and Assignee
 
-permissions:
-  issues: write
-
 on:
   pull_request:
     types: [opened, ready_for_review]
@@ -13,6 +10,8 @@ jobs:
   pr-assign:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - uses: hkusu/review-assign-action@v1
         with:
@@ -23,6 +22,8 @@ jobs:
   issue-assign:
     if: github.event_name == 'issues'
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - uses: gustavofreze/auto-assign@1.0.0
         with:
