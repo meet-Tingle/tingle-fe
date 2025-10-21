@@ -15,7 +15,6 @@ function App() {
         Tingle is a matching platform based on university student verification
         for university students to find and connect with other students.
       </Text>
-      <div>테스트를 위한 문구입니다.</div>
       <br />
       <Text size="sm" weight="regular" color="gray_400">
         Built with React + Vite + PWA
