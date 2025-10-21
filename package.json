@@ -9,14 +9,17 @@
     "prepare": "simple-git-hooks"
   },
   "simple-git-hooks": {
-		"pre-commit": "pnpm exec lint-staged"
-	},
+    "pre-commit": "pnpm exec lint-staged"
+  },
   "lint-staged": {
-		"*.{css,js,json,jsx,ts,tsx}": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true",
-		"package.json": "sort-package-json"
-	},
+    "*.{css,js,json,jsx,ts,tsx}": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true"
+  },
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
+    "imagemin-lint-staged": "^0.5.1",
+    "imagemin-mozjpeg": "^10.0.0",
+    "imagemin-pngquant": "^10.0.0",
+    "imagemin-svgo": "^11.0.1",
     "lint-staged": "^16.2.5",
     "simple-git-hooks": "^2.13.1",
     "turbo": "^2.5.5"
