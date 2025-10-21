@@ -5,10 +5,20 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "biome check .",
-    "lint:fix": "biome check . --write"
+    "lint:fix": "biome check . --write",
+    "prepare": "simple-git-hooks"
   },
+  "simple-git-hooks": {
+		"pre-commit": "pnpm exec lint-staged"
+	},
+  "lint-staged": {
+		"*.{css,js,json,jsx,ts,tsx}": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true",
+		"package.json": "sort-package-json"
+	},
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
+    "lint-staged": "^16.2.5",
+    "simple-git-hooks": "^2.13.1",
     "turbo": "^2.5.5"
   },
   "workspaces": [
