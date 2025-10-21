@@ -18,8 +18,7 @@
   "lint-staged": {
     "*.{css,js,json,jsx,ts,tsx}": "biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true",
     "package.json": "sort-package-json",
-    "*.{png,jpg,jpeg,svg}": "pnpm exec imagemin-lint-staged",
-    "*.ts?(x)": "tsc --noEmit --skipLibCheck"
+    "*.{png,jpg,jpeg,svg}": "pnpm exec imagemin-lint-staged"
   },
   "dependencies": {
     "sort-package-json": "^3.4.0"

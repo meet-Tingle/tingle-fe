@@ -25,3 +25,5 @@ dev-dist
 *.sw?
 
 .turbo/*
+*storybook.log
+storybook-static

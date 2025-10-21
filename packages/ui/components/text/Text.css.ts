@@ -1,5 +1,5 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { colors } from "../token/color";
+import colors from "../../token/color";
 
 export const baseText = style({
   fontFamily: "system-ui, -apple-system, sans-serif",
