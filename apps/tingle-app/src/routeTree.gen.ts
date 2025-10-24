@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./routes/__root";
+import { Route as WithAuthRouteImport } from "./routes/_withAuth";
+import { Route as WithAuthWithProfileRouteImport } from "./routes/_withAuth/_withProfile";
+import { Route as WithAuthWithProfileMainIndexRouteImport } from "./routes/_withAuth/_withProfile/main/index";
+import { Route as WithAuthProfileRouteImport } from "./routes/_withAuth/profile";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as LoginIndexRouteImport } from "./routes/login/index";
-import { Route as MainIndexRouteImport } from "./routes/main/index";
-import { Route as ProfileIndexRouteImport } from "./routes/profile/index";
 import { Route as SigninIndexRouteImport } from "./routes/signin/index";
 
+const WithAuthRoute = WithAuthRouteImport.update({
+  id: "/_withAuth",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const IndexRoute = IndexRouteImport.update({
   id: "/",
   path: "/",
@@ -25,62 +31,83 @@ const SigninIndexRoute = SigninIndexRouteImport.update({
   path: "/signin/",
   getParentRoute: () => rootRouteImport,
 } as any);
-const ProfileIndexRoute = ProfileIndexRouteImport.update({
-  id: "/profile/",
-  path: "/profile/",
-  getParentRoute: () => rootRouteImport,
-} as any);
-const MainIndexRoute = MainIndexRouteImport.update({
-  id: "/main/",
-  path: "/main/",
-  getParentRoute: () => rootRouteImport,
-} as any);
 const LoginIndexRoute = LoginIndexRouteImport.update({
   id: "/login/",
   path: "/login/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const WithAuthProfileRoute = WithAuthProfileRouteImport.update({
+  id: "/profile",
+  path: "/profile",
+  getParentRoute: () => WithAuthRoute,
+} as any);
+const WithAuthWithProfileRoute = WithAuthWithProfileRouteImport.update({
+  id: "/_withProfile",
+  getParentRoute: () => WithAuthRoute,
+} as any);
+const WithAuthWithProfileMainIndexRoute =
+  WithAuthWithProfileMainIndexRouteImport.update({
+    id: "/main/",
+    path: "/main/",
+    getParentRoute: () => WithAuthWithProfileRoute,
+  } as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
+  "/profile": typeof WithAuthProfileRoute;
   "/login": typeof LoginIndexRoute;
-  "/main": typeof MainIndexRoute;
-  "/profile": typeof ProfileIndexRoute;
   "/signin": typeof SigninIndexRoute;
+  "/main": typeof WithAuthWithProfileMainIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
+  "/profile": typeof WithAuthProfileRoute;
   "/login": typeof LoginIndexRoute;
-  "/main": typeof MainIndexRoute;
-  "/profile": typeof ProfileIndexRoute;
   "/signin": typeof SigninIndexRoute;
+  "/main": typeof WithAuthWithProfileMainIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
   "/": typeof IndexRoute;
+  "/_withAuth": typeof WithAuthRouteWithChildren;
+  "/_withAuth/_withProfile": typeof WithAuthWithProfileRouteWithChildren;
+  "/_withAuth/profile": typeof WithAuthProfileRoute;
   "/login/": typeof LoginIndexRoute;
-  "/main/": typeof MainIndexRoute;
-  "/profile/": typeof ProfileIndexRoute;
   "/signin/": typeof SigninIndexRoute;
+  "/_withAuth/_withProfile/main/": typeof WithAuthWithProfileMainIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/login" | "/main" | "/profile" | "/signin";
+  fullPaths: "/" | "/profile" | "/login" | "/signin" | "/main";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/login" | "/main" | "/profile" | "/signin";
-  id: "__root__" | "/" | "/login/" | "/main/" | "/profile/" | "/signin/";
+  to: "/" | "/profile" | "/login" | "/signin" | "/main";
+  id:
+    | "__root__"
+    | "/"
+    | "/_withAuth"
+    | "/_withAuth/_withProfile"
+    | "/_withAuth/profile"
+    | "/login/"
+    | "/signin/"
+    | "/_withAuth/_withProfile/main/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
+  WithAuthRoute: typeof WithAuthRouteWithChildren;
   LoginIndexRoute: typeof LoginIndexRoute;
-  MainIndexRoute: typeof MainIndexRoute;
-  ProfileIndexRoute: typeof ProfileIndexRoute;
   SigninIndexRoute: typeof SigninIndexRoute;
 }
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
+    "/_withAuth": {
+      id: "/_withAuth";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof WithAuthRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/": {
       id: "/";
       path: "/";
@@ -95,20 +122,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof SigninIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/profile/": {
-      id: "/profile/";
-      path: "/profile";
-      fullPath: "/profile";
-      preLoaderRoute: typeof ProfileIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/main/": {
-      id: "/main/";
-      path: "/main";
-      fullPath: "/main";
-      preLoaderRoute: typeof MainIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
     "/login/": {
       id: "/login/";
       path: "/login";
@@ -116,14 +129,59 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LoginIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/_withAuth/profile": {
+      id: "/_withAuth/profile";
+      path: "/profile";
+      fullPath: "/profile";
+      preLoaderRoute: typeof WithAuthProfileRouteImport;
+      parentRoute: typeof WithAuthRoute;
+    };
+    "/_withAuth/_withProfile": {
+      id: "/_withAuth/_withProfile";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof WithAuthWithProfileRouteImport;
+      parentRoute: typeof WithAuthRoute;
+    };
+    "/_withAuth/_withProfile/main/": {
+      id: "/_withAuth/_withProfile/main/";
+      path: "/main";
+      fullPath: "/main";
+      preLoaderRoute: typeof WithAuthWithProfileMainIndexRouteImport;
+      parentRoute: typeof WithAuthWithProfileRoute;
+    };
   }
 }
 
+interface WithAuthWithProfileRouteChildren {
+  WithAuthWithProfileMainIndexRoute: typeof WithAuthWithProfileMainIndexRoute;
+}
+
+const WithAuthWithProfileRouteChildren: WithAuthWithProfileRouteChildren = {
+  WithAuthWithProfileMainIndexRoute: WithAuthWithProfileMainIndexRoute,
+};
+
+const WithAuthWithProfileRouteWithChildren =
+  WithAuthWithProfileRoute._addFileChildren(WithAuthWithProfileRouteChildren);
+
+interface WithAuthRouteChildren {
+  WithAuthWithProfileRoute: typeof WithAuthWithProfileRouteWithChildren;
+  WithAuthProfileRoute: typeof WithAuthProfileRoute;
+}
+
+const WithAuthRouteChildren: WithAuthRouteChildren = {
+  WithAuthWithProfileRoute: WithAuthWithProfileRouteWithChildren,
+  WithAuthProfileRoute: WithAuthProfileRoute,
+};
+
+const WithAuthRouteWithChildren = WithAuthRoute._addFileChildren(
+  WithAuthRouteChildren,
+);
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  WithAuthRoute: WithAuthRouteWithChildren,
   LoginIndexRoute: LoginIndexRoute,
-  MainIndexRoute: MainIndexRoute,
-  ProfileIndexRoute: ProfileIndexRoute,
   SigninIndexRoute: SigninIndexRoute,
 };
 export const routeTree = rootRouteImport

@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "types": ["react", "node"],
     "paths": {
       "@tingle/ui": ["../../packages/ui"],
       "@/*": ["./src/*"],
