@@ -18,6 +18,11 @@ export default function Login() {
           Back
         </Text>
       </button>
+      <button type="button" onClick={() => router.navigate({ to: "/profile" })}>
+        <Text size="md" weight="bold" color="gray_600">
+          Login - Profile Page
+        </Text>
+      </button>
     </div>
   );
 }
