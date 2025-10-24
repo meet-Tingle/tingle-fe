@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@tingle/ui": ["../../packages/ui"]
+      "@tingle/ui": ["../../packages/ui"],
+      "@/*": ["./src/*"],
+      "@pages/*": ["./src/pages/*"]
     }
   },
   "include": ["src"]

@@ -9,6 +9,8 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   resolve: {
     alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "@pages": path.resolve(__dirname, "./src/pages"),
       "@tingle/ui": path.resolve(__dirname, "../../packages/ui"),
     },
   },
