@@ -1,21 +1,26 @@
 {
   "name": "tingle-app",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc -b && vite build",
+    "dev": "vite",
     "preview": "vite preview"
+  },
+  "resolutions": {
+    "sharp": "0.32.6",
+    "sharp-ico": "0.1.5"
   },
   "dependencies": {
     "@tanstack/react-query": "catalog:",
+    "@tanstack/react-router": "^1.133.27",
+    "@tingle/ui": "workspace:*",
     "@vanilla-extract/css": "^1.17.4",
     "jotai": "^2.15.0",
     "react": "catalog:",
     "react-dom": "catalog:",
     "rxjs": "^7.8.2",
-    "@tingle/ui": "workspace:*",
     "typescript": "catalog:"
   },
   "devDependencies": {
@@ -32,9 +37,5 @@
     "workbox-routing": "^7.3.0",
     "workbox-strategies": "^7.3.0",
     "workbox-window": "^7.3.0"
-  },
-  "resolutions": {
-    "sharp": "0.32.6",
-    "sharp-ico": "0.1.5"
   }
 }
