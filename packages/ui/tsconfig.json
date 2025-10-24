@@ -7,7 +7,9 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noEmit": true
   },
-  "include": ["./**/*"]
+  "include": ["./**/*"],
+  "exclude": ["dist", "node_modules", "**/*.stories.tsx", "**/*.test.tsx"]
 }
