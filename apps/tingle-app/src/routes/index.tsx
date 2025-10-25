@@ -1,8 +1,13 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Text } from "@tingle/ui";
-import tingleLogo from "./assets/tingle.svg";
-import PWABadge from "./PWABadge.tsx";
+import tingleLogo from "../assets/tingle.svg";
+import PWABadge from "../PWABadge";
 
-function App() {
+export const Route = createFileRoute("/")({
+  component: Index,
+});
+
+function Index() {
   return (
     <>
       <div>
@@ -20,8 +25,14 @@ function App() {
         Built with React + Vite + PWA
       </Text>
       <PWABadge />
+
+      <div style={{ display: "flex", gap: "10px" }}>
+        <Link to="/login">
+          <Text size="md" weight="bold" color="gray_600">
+            Login
+          </Text>
+        </Link>
+      </div>
     </>
   );
 }
-
-export default App;
