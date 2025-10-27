@@ -8,182 +8,201 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as WithAuthRouteImport } from "./routes/_withAuth";
-import { Route as WithAuthWithProfileRouteImport } from "./routes/_withAuth/_withProfile";
-import { Route as WithAuthWithProfileMainIndexRouteImport } from "./routes/_withAuth/_withProfile/main/index";
-import { Route as WithAuthProfileRouteImport } from "./routes/_withAuth/profile";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as LoginIndexRouteImport } from "./routes/login/index";
-import { Route as SigninIndexRouteImport } from "./routes/signin/index";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as WithAuthRouteImport } from './routes/_withAuth'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as SigninIndexRouteImport } from './routes/signin/index'
+import { Route as PocIndexRouteImport } from './routes/poc/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as WithAuthProfileRouteImport } from './routes/_withAuth/profile'
+import { Route as WithAuthWithProfileRouteImport } from './routes/_withAuth/_withProfile'
+import { Route as WithAuthWithProfileMainIndexRouteImport } from './routes/_withAuth/_withProfile/main/index'
 
 const WithAuthRoute = WithAuthRouteImport.update({
-  id: "/_withAuth",
+  id: '/_withAuth',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SigninIndexRoute = SigninIndexRouteImport.update({
-  id: "/signin/",
-  path: "/signin/",
+  id: '/signin/',
+  path: '/signin/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
+const PocIndexRoute = PocIndexRouteImport.update({
+  id: '/poc/',
+  path: '/poc/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: "/login/",
-  path: "/login/",
+  id: '/login/',
+  path: '/login/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const WithAuthProfileRoute = WithAuthProfileRouteImport.update({
-  id: "/profile",
-  path: "/profile",
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => WithAuthRoute,
-} as any);
+} as any)
 const WithAuthWithProfileRoute = WithAuthWithProfileRouteImport.update({
-  id: "/_withProfile",
+  id: '/_withProfile',
   getParentRoute: () => WithAuthRoute,
-} as any);
+} as any)
 const WithAuthWithProfileMainIndexRoute =
   WithAuthWithProfileMainIndexRouteImport.update({
-    id: "/main/",
-    path: "/main/",
+    id: '/main/',
+    path: '/main/',
     getParentRoute: () => WithAuthWithProfileRoute,
-  } as any);
+  } as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/profile": typeof WithAuthProfileRoute;
-  "/login": typeof LoginIndexRoute;
-  "/signin": typeof SigninIndexRoute;
-  "/main": typeof WithAuthWithProfileMainIndexRoute;
+  '/': typeof IndexRoute
+  '/profile': typeof WithAuthProfileRoute
+  '/login': typeof LoginIndexRoute
+  '/poc': typeof PocIndexRoute
+  '/signin': typeof SigninIndexRoute
+  '/main': typeof WithAuthWithProfileMainIndexRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/profile": typeof WithAuthProfileRoute;
-  "/login": typeof LoginIndexRoute;
-  "/signin": typeof SigninIndexRoute;
-  "/main": typeof WithAuthWithProfileMainIndexRoute;
+  '/': typeof IndexRoute
+  '/profile': typeof WithAuthProfileRoute
+  '/login': typeof LoginIndexRoute
+  '/poc': typeof PocIndexRoute
+  '/signin': typeof SigninIndexRoute
+  '/main': typeof WithAuthWithProfileMainIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/_withAuth": typeof WithAuthRouteWithChildren;
-  "/_withAuth/_withProfile": typeof WithAuthWithProfileRouteWithChildren;
-  "/_withAuth/profile": typeof WithAuthProfileRoute;
-  "/login/": typeof LoginIndexRoute;
-  "/signin/": typeof SigninIndexRoute;
-  "/_withAuth/_withProfile/main/": typeof WithAuthWithProfileMainIndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_withAuth': typeof WithAuthRouteWithChildren
+  '/_withAuth/_withProfile': typeof WithAuthWithProfileRouteWithChildren
+  '/_withAuth/profile': typeof WithAuthProfileRoute
+  '/login/': typeof LoginIndexRoute
+  '/poc/': typeof PocIndexRoute
+  '/signin/': typeof SigninIndexRoute
+  '/_withAuth/_withProfile/main/': typeof WithAuthWithProfileMainIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/profile" | "/login" | "/signin" | "/main";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/profile" | "/login" | "/signin" | "/main";
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/profile' | '/login' | '/poc' | '/signin' | '/main'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/profile' | '/login' | '/poc' | '/signin' | '/main'
   id:
-    | "__root__"
-    | "/"
-    | "/_withAuth"
-    | "/_withAuth/_withProfile"
-    | "/_withAuth/profile"
-    | "/login/"
-    | "/signin/"
-    | "/_withAuth/_withProfile/main/";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/_withAuth'
+    | '/_withAuth/_withProfile'
+    | '/_withAuth/profile'
+    | '/login/'
+    | '/poc/'
+    | '/signin/'
+    | '/_withAuth/_withProfile/main/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  WithAuthRoute: typeof WithAuthRouteWithChildren;
-  LoginIndexRoute: typeof LoginIndexRoute;
-  SigninIndexRoute: typeof SigninIndexRoute;
+  IndexRoute: typeof IndexRoute
+  WithAuthRoute: typeof WithAuthRouteWithChildren
+  LoginIndexRoute: typeof LoginIndexRoute
+  PocIndexRoute: typeof PocIndexRoute
+  SigninIndexRoute: typeof SigninIndexRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/_withAuth": {
-      id: "/_withAuth";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof WithAuthRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/signin/": {
-      id: "/signin/";
-      path: "/signin";
-      fullPath: "/signin";
-      preLoaderRoute: typeof SigninIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/login/": {
-      id: "/login/";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_withAuth/profile": {
-      id: "/_withAuth/profile";
-      path: "/profile";
-      fullPath: "/profile";
-      preLoaderRoute: typeof WithAuthProfileRouteImport;
-      parentRoute: typeof WithAuthRoute;
-    };
-    "/_withAuth/_withProfile": {
-      id: "/_withAuth/_withProfile";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof WithAuthWithProfileRouteImport;
-      parentRoute: typeof WithAuthRoute;
-    };
-    "/_withAuth/_withProfile/main/": {
-      id: "/_withAuth/_withProfile/main/";
-      path: "/main";
-      fullPath: "/main";
-      preLoaderRoute: typeof WithAuthWithProfileMainIndexRouteImport;
-      parentRoute: typeof WithAuthWithProfileRoute;
-    };
+    '/_withAuth': {
+      id: '/_withAuth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof WithAuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin/': {
+      id: '/signin/'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/poc/': {
+      id: '/poc/'
+      path: '/poc'
+      fullPath: '/poc'
+      preLoaderRoute: typeof PocIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_withAuth/profile': {
+      id: '/_withAuth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof WithAuthProfileRouteImport
+      parentRoute: typeof WithAuthRoute
+    }
+    '/_withAuth/_withProfile': {
+      id: '/_withAuth/_withProfile'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof WithAuthWithProfileRouteImport
+      parentRoute: typeof WithAuthRoute
+    }
+    '/_withAuth/_withProfile/main/': {
+      id: '/_withAuth/_withProfile/main/'
+      path: '/main'
+      fullPath: '/main'
+      preLoaderRoute: typeof WithAuthWithProfileMainIndexRouteImport
+      parentRoute: typeof WithAuthWithProfileRoute
+    }
   }
 }
 
 interface WithAuthWithProfileRouteChildren {
-  WithAuthWithProfileMainIndexRoute: typeof WithAuthWithProfileMainIndexRoute;
+  WithAuthWithProfileMainIndexRoute: typeof WithAuthWithProfileMainIndexRoute
 }
 
 const WithAuthWithProfileRouteChildren: WithAuthWithProfileRouteChildren = {
   WithAuthWithProfileMainIndexRoute: WithAuthWithProfileMainIndexRoute,
-};
+}
 
 const WithAuthWithProfileRouteWithChildren =
-  WithAuthWithProfileRoute._addFileChildren(WithAuthWithProfileRouteChildren);
+  WithAuthWithProfileRoute._addFileChildren(WithAuthWithProfileRouteChildren)
 
 interface WithAuthRouteChildren {
-  WithAuthWithProfileRoute: typeof WithAuthWithProfileRouteWithChildren;
-  WithAuthProfileRoute: typeof WithAuthProfileRoute;
+  WithAuthWithProfileRoute: typeof WithAuthWithProfileRouteWithChildren
+  WithAuthProfileRoute: typeof WithAuthProfileRoute
 }
 
 const WithAuthRouteChildren: WithAuthRouteChildren = {
   WithAuthWithProfileRoute: WithAuthWithProfileRouteWithChildren,
   WithAuthProfileRoute: WithAuthProfileRoute,
-};
+}
 
 const WithAuthRouteWithChildren = WithAuthRoute._addFileChildren(
   WithAuthRouteChildren,
-);
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   WithAuthRoute: WithAuthRouteWithChildren,
   LoginIndexRoute: LoginIndexRoute,
+  PocIndexRoute: PocIndexRoute,
   SigninIndexRoute: SigninIndexRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()

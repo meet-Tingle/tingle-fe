@@ -33,6 +33,13 @@ function Index() {
           </Text>
         </Link>
       </div>
+      <div style={{ display: "flex", gap: "10px" }}>
+        <Link to="/poc">
+          <Text size="md" weight="bold" color="gray_600">
+            POC
+          </Text>
+        </Link>
+      </div>
     </>
   );
 }
