@@ -1,4 +1,4 @@
-import { createFormParser } from "@tingle/parser";
+import { createParser } from "@tingle/parser";
 import { Text } from "@tingle/ui";
 import { useMemo, useState } from "react";
 import { mockFormMetadata } from "./mock";
@@ -6,7 +6,7 @@ import { mockFormMetadata } from "./mock";
 export default function Form() {
   // parser와 fields를 useMemo로 고정
   const fields = useMemo(() => {
-    const parser = createFormParser();
+    const parser = createParser();
 
     parser.registerCustomValidation("minSelection", (value) => {
       if (Array.isArray(value) && value.length < 2) {
