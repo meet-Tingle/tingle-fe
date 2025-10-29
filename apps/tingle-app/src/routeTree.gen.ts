@@ -13,6 +13,7 @@ import { Route as WithAuthRouteImport } from './routes/_withAuth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SigninIndexRouteImport } from './routes/signin/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as FormIndexRouteImport } from './routes/form/index'
 import { Route as WithAuthProfileRouteImport } from './routes/_withAuth/profile'
 import { Route as WithAuthWithProfileRouteImport } from './routes/_withAuth/_withProfile'
 import { Route as WithAuthWithProfileMainIndexRouteImport } from './routes/_withAuth/_withProfile/main/index'
@@ -36,6 +37,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FormIndexRoute = FormIndexRouteImport.update({
+  id: '/form/',
+  path: '/form/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WithAuthProfileRoute = WithAuthProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -55,6 +61,7 @@ const WithAuthWithProfileMainIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/profile': typeof WithAuthProfileRoute
+  '/form': typeof FormIndexRoute
   '/login': typeof LoginIndexRoute
   '/signin': typeof SigninIndexRoute
   '/main': typeof WithAuthWithProfileMainIndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/profile': typeof WithAuthProfileRoute
+  '/form': typeof FormIndexRoute
   '/login': typeof LoginIndexRoute
   '/signin': typeof SigninIndexRoute
   '/main': typeof WithAuthWithProfileMainIndexRoute
@@ -72,21 +80,23 @@ export interface FileRoutesById {
   '/_withAuth': typeof WithAuthRouteWithChildren
   '/_withAuth/_withProfile': typeof WithAuthWithProfileRouteWithChildren
   '/_withAuth/profile': typeof WithAuthProfileRoute
+  '/form/': typeof FormIndexRoute
   '/login/': typeof LoginIndexRoute
   '/signin/': typeof SigninIndexRoute
   '/_withAuth/_withProfile/main/': typeof WithAuthWithProfileMainIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/profile' | '/login' | '/signin' | '/main'
+  fullPaths: '/' | '/profile' | '/form' | '/login' | '/signin' | '/main'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/profile' | '/login' | '/signin' | '/main'
+  to: '/' | '/profile' | '/form' | '/login' | '/signin' | '/main'
   id:
     | '__root__'
     | '/'
     | '/_withAuth'
     | '/_withAuth/_withProfile'
     | '/_withAuth/profile'
+    | '/form/'
     | '/login/'
     | '/signin/'
     | '/_withAuth/_withProfile/main/'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   WithAuthRoute: typeof WithAuthRouteWithChildren
+  FormIndexRoute: typeof FormIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   SigninIndexRoute: typeof SigninIndexRoute
 }
@@ -127,6 +138,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/form/': {
+      id: '/form/'
+      path: '/form'
+      fullPath: '/form'
+      preLoaderRoute: typeof FormIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_withAuth/profile': {
@@ -181,6 +199,7 @@ const WithAuthRouteWithChildren = WithAuthRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   WithAuthRoute: WithAuthRouteWithChildren,
+  FormIndexRoute: FormIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   SigninIndexRoute: SigninIndexRoute,
 }
