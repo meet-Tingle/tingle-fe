@@ -14,6 +14,10 @@ type ParsedField = {
 
 interface ParserInterface {
   parse(metadata: Metadata[]): ParsedField[];
+  registerCustomValidation(
+    name: string,
+    validationFn: ValidationFunction,
+  ): void;
 }
 
 class Parser implements ParserInterface {
