@@ -32,6 +32,11 @@ function Index() {
             Login
           </Text>
         </Link>
+        <Link to="/form">
+          <Text size="md" weight="bold" color="gray_600">
+            Form
+          </Text>
+        </Link>
       </div>
     </>
   );
