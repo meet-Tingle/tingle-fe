@@ -2,12 +2,11 @@
   "extends": "../../tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "moduleResolution": "node",
     "types": ["react", "node"],
     "paths": {
-      "@tingle/ui": ["../../packages/ui"],
       "@/*": ["./src/*"],
       "@pages/*": ["./src/pages/*"]
     }
-  },
-  "include": ["src"]
+  }
 }
