@@ -17,7 +17,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "^6.1.0",
