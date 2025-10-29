@@ -1,6 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import type { Metadata, ValidationFunction } from "./parser.type";
-import { defaultValidatorRegistry, ValidatorFactory } from "./validators";
+import {
+  defaultValidatorRegistry,
+  type Validator,
+  ValidatorFactory,
+} from "./validators";
 import { CustomValidator } from "./validators/common/CustomValidator";
 
 type ParsedField = {
@@ -46,14 +50,7 @@ class Parser implements ParserInterface {
   }
 
   private createValidationFunction(field: Metadata): ValidationFunction {
-    const validators = this.validatorFactory.create(field);
-
-    // custom validation 등록
-    if (field.validation?.custom) {
-      validators.push(
-        new CustomValidator(field.validation.custom, this.customValidations),
-      );
-    }
+    const validators = this.getValidatorsWithCustomValidation(field);
 
     return (value) => {
       const errors: string[] = [];
@@ -70,6 +67,18 @@ class Parser implements ParserInterface {
         ? { isValid: false, error: errors[0], errors }
         : { isValid: true };
     };
+  }
+
+  private getValidatorsWithCustomValidation(field: Metadata): Validator[] {
+    const validators = this.validatorFactory.create(field);
+
+    if (field.validation?.custom) {
+      validators.push(
+        new CustomValidator(field.validation.custom, this.customValidations),
+      );
+    }
+
+    return validators;
   }
 }
 
