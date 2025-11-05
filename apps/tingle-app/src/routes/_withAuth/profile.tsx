@@ -1,5 +1,5 @@
-import { ProfilePage } from "@pages/profile";
 import { createFileRoute } from "@tanstack/react-router";
+import ProfilePage from "@/pages/profile/ProfilePage";
 
 export const Route = createFileRoute("/_withAuth/profile")({
   component: RouteComponent,

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Text } from "@tingle/ui";
 
-export default function Profile() {
+export default function ProfilePage() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
       <Text size="2xl" weight="bold" color="gray_600">
