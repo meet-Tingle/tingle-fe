@@ -1,7 +1,7 @@
 import { useRouter } from "@tanstack/react-router";
 import { Text } from "@tingle/ui";
 
-export default function Signin() {
+export default function SigninPage() {
   const router = useRouter();
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
