@@ -9,13 +9,17 @@ export const container = style({
   padding: "2rem 1.5rem",
 });
 
+export const headerGroup = style({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "16px",
+  viewTransitionName: "tingle-header",
+});
+
 export const logo = style({
   width: "200px",
   height: "200px",
-});
-
-export const pwaBadgeWrapper = style({
-  marginTop: "2rem",
 });
 
 export const textContainer = style({
@@ -24,4 +28,8 @@ export const textContainer = style({
   alignItems: "center",
   justifyContent: "center",
   gap: "10px",
+});
+
+export const pwaBadgeWrapper = style({
+  marginTop: "2rem",
 });
