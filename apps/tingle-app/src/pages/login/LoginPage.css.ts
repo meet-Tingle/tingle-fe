@@ -53,7 +53,7 @@ export const formContainer = style({
 export const inputWrapper = style({
   display: "flex",
   flexDirection: "column",
-  gap: "8px",
+  gap: "4px",
 });
 
 export const label = style({
@@ -72,4 +72,10 @@ export const buttonGroup = style({
 export const linkText = style({
   textAlign: "center",
   marginTop: "16px",
+});
+
+export const errorMessage = style({
+  fontSize: "12px",
+  color: "#EF4444",
+  marginTop: "4px",
 });

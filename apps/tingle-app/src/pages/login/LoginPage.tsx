@@ -1,22 +1,47 @@
 import { Link, useRouter } from "@tanstack/react-router";
 import { Button, Input, Text } from "@tingle/ui";
-import type { ChangeEvent } from "react";
-import { useState } from "react";
+import { useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import tingleLogo from "@/assets/tingle.svg";
+import { customResolver } from "@/utils/zodCustomResolver";
 import * as styles from "./LoginPage.css";
+
+const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, "이메일을 입력해주세요")
+    .email("올바른 이메일 형식이 아닙니다"),
+  password: z
+    .string()
+    .min(1, "비밀번호를 입력해주세요")
+    .min(4, "비밀번호는 최소 4자리 이상이어야 합니다"),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: customResolver(loginSchema),
+    mode: "onBlur",
+  });
 
-  const handleLogin = () => {
-    router.navigate({ to: "/profile" });
-  };
+  const onSubmit = useCallback(
+    (data: LoginFormData) => {
+      console.log("Login data:", data);
+      router.navigate({ to: "/profile" });
+    },
+    [router],
+  );
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     router.navigate({ to: "/" });
-  };
+  }, [router]);
 
   return (
     <div className={styles.container}>
@@ -32,7 +57,11 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <form onSubmit={handleLogin} className={styles.formContainer}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={styles.formContainer}
+        noValidate
+      >
         <div className={styles.inputWrapper}>
           <label htmlFor="email" className={styles.label}>
             이메일
@@ -41,12 +70,13 @@ export default function LoginPage() {
             id="email"
             type="email"
             placeholder="email@example.com"
-            value={email}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setEmail(e.target.value)
-            }
             size="full"
+            error={!!errors.email}
+            {...register("email")}
           />
+          {errors.email && (
+            <span className={styles.errorMessage}>{errors.email.message}</span>
+          )}
         </div>
 
         <div className={styles.inputWrapper}>
@@ -57,24 +87,27 @@ export default function LoginPage() {
             id="password"
             type="password"
             placeholder="비밀번호를 입력하세요"
-            value={password}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setPassword(e.target.value)
-            }
             size="full"
+            error={!!errors.password}
+            {...register("password")}
           />
+          {errors.password && (
+            <span className={styles.errorMessage}>
+              {errors.password.message}
+            </span>
+          )}
         </div>
 
         <div className={styles.buttonGroup}>
-          <Button
-            type="submit"
-            variant="primary"
-            size="default"
-            onClick={handleLogin}
-          >
+          <Button type="submit" variant="primary" size="default">
             로그인
           </Button>
-          <Button variant="ghost" size="default" onClick={handleBack}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="default"
+            onClick={handleBack}
+          >
             돌아가기
           </Button>
         </div>
