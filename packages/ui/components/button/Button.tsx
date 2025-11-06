@@ -1,4 +1,9 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import {
+  type ButtonHTMLAttributes,
+  memo,
+  type ReactNode,
+  useMemo,
+} from "react";
 import * as styles from "./Button.css";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -14,7 +19,7 @@ interface IconProps {
   className?: string;
 }
 
-function ButtonRoot({
+const ButtonRoot = memo(function ButtonRoot({
   children,
   variant = "primary",
   size = "default",
@@ -24,16 +29,18 @@ function ButtonRoot({
   type = "button",
   ...props
 }: ButtonProps) {
-  const classNames = [
-    styles.baseButton,
-    variant !== "text" && styles.sizeVariants[size],
-    styles.variantStyles[variant],
-    disabled && styles.disabled,
-    variant === "text" && underline && styles.underline,
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const classNames = useMemo(() => {
+    return [
+      styles.baseButton,
+      variant !== "text" && styles.sizeVariants[size],
+      styles.variantStyles[variant],
+      disabled && styles.disabled,
+      variant === "text" && underline && styles.underline,
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }, [variant, size, underline, disabled, className]);
 
   return (
     <button
@@ -46,7 +53,7 @@ function ButtonRoot({
       {children}
     </button>
   );
-}
+});
 
 function LeftIcon({ children, className }: IconProps) {
   return (

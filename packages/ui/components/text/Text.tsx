@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { memo, type ReactNode, useMemo } from "react";
 import {
   alignVariants,
   baseText,
@@ -19,7 +19,7 @@ export interface TextProps {
   className?: string;
 }
 
-export function Text({
+export const Text = memo(function Text({
   children,
   size = "md",
   weight = "regular",
@@ -29,17 +29,19 @@ export function Text({
   as: Component = "span",
   className,
 }: TextProps) {
-  const classNames = [
-    baseText,
-    sizeVariants[size],
-    weightVariants[weight],
-    colorVariants[color],
-    alignVariants[align],
-    decorationVariants[decoration],
-    className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const classNames = useMemo(() => {
+    return [
+      baseText,
+      sizeVariants[size],
+      weightVariants[weight],
+      colorVariants[color],
+      alignVariants[align],
+      decorationVariants[decoration],
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }, [size, weight, color, align, decoration, className]);
 
   return <Component className={classNames}>{children}</Component>;
-}
+});
