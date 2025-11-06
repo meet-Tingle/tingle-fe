@@ -29,17 +29,15 @@ export const baseButton = style({
 export const sizeVariants = styleVariants({
   default: {
     width: "100%",
-    height: "40px",
-    padding: "0 16px",
+    padding: "10px 16px",
   },
   small: {
     width: "fit-content",
-    height: "32px",
-    padding: "0 12px",
+    fontSize: "12px",
+    padding: "8px 12px",
   },
   fit: {
     width: "fit-content",
-    height: "fit-content",
     padding: "8px 12px",
   },
 });
