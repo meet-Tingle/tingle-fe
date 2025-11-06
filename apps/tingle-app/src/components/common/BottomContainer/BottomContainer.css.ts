@@ -31,4 +31,5 @@ export const bottomContainer = style({
   zIndex: 100,
   maxWidth: "480px",
   margin: "0 auto",
+  flexDirection: "column",
 });
