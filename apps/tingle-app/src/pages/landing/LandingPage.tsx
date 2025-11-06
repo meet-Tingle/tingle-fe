@@ -35,7 +35,7 @@ export default function LandingPage() {
 
       <BottomContainer.Bottom>
         <Button variant="primary" size="default" onClick={handleLogin}>
-          로그인
+          인연 만들러 가기
         </Button>
       </BottomContainer.Bottom>
     </BottomContainer>
