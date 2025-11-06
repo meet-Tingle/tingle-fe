@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
+import { Icon } from "../icon";
 import { Input, type InputProps } from "./Input";
 
 const meta: Meta<typeof Input> = {
@@ -52,33 +53,7 @@ const labelStyle: React.CSSProperties = {
   color: "#374151",
 };
 
-// Icons for demos
-const SearchIcon = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <title>Search</title>
-    <path
-      d="M7 12C9.76142 12 12 9.76142 12 7C12 4.23858 9.76142 2 7 2C4.23858 2 2 4.23858 2 7C2 9.76142 4.23858 12 7 12Z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M14 14L10.5 10.5"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
+// Icons for demos (email and lock icons not available in Icon component yet)
 const EmailIcon = () => (
   <svg
     width="16"
@@ -195,7 +170,10 @@ export const WithIcons: Story = {
     <div style={containerStyle}>
       <div style={rowStyle}>
         <span style={labelStyle}>Left Icon:</span>
-        <Input leftIcon={<SearchIcon />} placeholder="Search..." />
+        <Input
+          leftIcon={<Icon name="search" size={16} />}
+          placeholder="Search..."
+        />
       </div>
       <div style={rowStyle}>
         <span style={labelStyle}>Right Icon:</span>
@@ -243,7 +221,7 @@ export const Clearable: Story = {
           <span style={labelStyle}>With Icon:</span>
           <Input
             clearable
-            leftIcon={<SearchIcon />}
+            leftIcon={<Icon name="search" size={16} />}
             value={value2}
             onChange={(e) => setValue2(e.target.value)}
             onClear={() => setValue2("")}
@@ -295,7 +273,7 @@ export const InputTypes: Story = {
         <span style={labelStyle}>Search:</span>
         <Input
           type="search"
-          leftIcon={<SearchIcon />}
+          leftIcon={<Icon name="search" size={16} />}
           clearable
           placeholder="Search..."
         />
@@ -419,7 +397,7 @@ export const RealWorldExamples: Story = {
         </h3>
         <Input
           type="search"
-          leftIcon={<SearchIcon />}
+          leftIcon={<Icon name="search" size={16} />}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           clearable
@@ -465,7 +443,10 @@ export const AllStatesShowcase: Story = {
         <div>
           <h4 style={{ margin: "0 0 8px 0", fontSize: "14px" }}>With Icons</h4>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <Input leftIcon={<SearchIcon />} placeholder="Search..." />
+            <Input
+              leftIcon={<Icon name="search" size={16} />}
+              placeholder="Search..."
+            />
             <Input
               leftIcon={<EmailIcon />}
               placeholder="email@example.com"
