@@ -12,7 +12,7 @@ export const appContainer = style({
   margin: "0 auto",
   minWidth: `${MIN_WIDTH}px`,
   maxWidth: `${MAX_WIDTH}px`,
-  minHeight: "100vh",
+  minHeight: "100dvh",
   "@media": {
     [`(min-width: ${MAX_WIDTH + 1}px)`]: {
       boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)",
