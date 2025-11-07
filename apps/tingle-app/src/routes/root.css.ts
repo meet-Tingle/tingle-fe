@@ -1,4 +1,4 @@
-import { globalStyle, style } from "@vanilla-extract/css";
+import { style } from "@vanilla-extract/css";
 
 const MAX_WIDTH = 480;
 const MIN_WIDTH = 320;
@@ -18,21 +18,4 @@ export const appContainer = style({
       boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)",
     },
   },
-});
-
-// View Transitions API 커스터마이징
-globalStyle(
-  "::view-transition-old(tingle-header), ::view-transition-new(tingle-header)",
-  {
-    animationDuration: "0.3s",
-    animationTimingFunction: "ease-in-out",
-  },
-);
-
-globalStyle("::view-transition-old(root)", {
-  animationDuration: "0.3s",
-});
-
-globalStyle("::view-transition-new(root)", {
-  animationDuration: "0.3s",
 });

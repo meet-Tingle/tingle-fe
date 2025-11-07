@@ -23,7 +23,7 @@ export default function LandingPage() {
         <div className={styles.headerGroup}>
           <img src={tingleLogo} className={styles.logo} alt="Tingle logo" />
           <div className={styles.textContainer}>
-            <Text as="h1" size="4xl" weight="bold" color="gray_700">
+            <Text as="h1" size="2xl" weight="bold" color="gray_700">
               TINGLE
             </Text>
             <Text size="md" weight="medium" color="gray_500">
