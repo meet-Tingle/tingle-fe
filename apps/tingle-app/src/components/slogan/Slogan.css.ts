@@ -8,8 +8,8 @@ export const header = style({
 });
 
 export const logo = style({
-  width: "200px",
-  height: "200px",
+  width: "160px",
+  height: "160px",
 });
 
 export const textContainer = style({
