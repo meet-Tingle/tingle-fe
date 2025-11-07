@@ -8,10 +8,11 @@ import { customResolver } from "@/utils/zodCustomResolver";
 import * as styles from "./LoginPage.css";
 
 const loginSchema = z.object({
-  email: z
+  userId: z
     .string()
-    .min(1, "이메일을 입력해주세요")
-    .email("올바른 이메일 형식이 아닙니다"),
+    .min(1, "아이디를 입력해주세요")
+    .min(4, "아이디는 최소 4자리 이상이어야 합니다")
+    .regex(/^[a-zA-Z0-9_]+$/, "아이디는 영문, 숫자, _만 사용 가능합니다"),
   password: z
     .string()
     .min(1, "비밀번호를 입력해주세요")
@@ -52,19 +53,19 @@ export default function LoginPage() {
         noValidate
       >
         <div className={styles.inputWrapper}>
-          <label htmlFor="email" className={styles.label}>
-            이메일
+          <label htmlFor="userId" className={styles.label}>
+            아이디
           </label>
           <Input
-            id="email"
-            type="email"
-            placeholder="email@example.com"
+            id="userId"
+            type="text"
+            placeholder="영문, 숫자, _ 사용 가능"
             size="full"
-            error={!!errors.email}
-            {...register("email")}
+            error={!!errors.userId}
+            {...register("userId")}
           />
-          {errors.email && (
-            <span className={styles.errorMessage}>{errors.email.message}</span>
+          {errors.userId && (
+            <span className={styles.errorMessage}>{errors.userId.message}</span>
           )}
         </div>
 
