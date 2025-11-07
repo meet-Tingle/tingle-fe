@@ -10,26 +10,6 @@ export const container = style({
   gap: "32px",
 });
 
-export const header = style({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "16px",
-  viewTransitionName: "tingle-header",
-});
-
-export const logo = style({
-  width: "200px",
-  height: "200px",
-});
-
-export const textContainer = style({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "10px",
-});
-
 const fadeInUp = keyframes({
   from: {
     opacity: 0,

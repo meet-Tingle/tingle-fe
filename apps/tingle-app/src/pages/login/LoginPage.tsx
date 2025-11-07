@@ -3,7 +3,7 @@ import { Button, Input, Text } from "@tingle/ui";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import tingleLogo from "@/assets/tingle.svg";
+import Slogan from "@/components/slogan/Slogan";
 import { customResolver } from "@/utils/zodCustomResolver";
 import * as styles from "./LoginPage.css";
 
@@ -45,18 +45,7 @@ export default function LoginPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <img src={tingleLogo} className={styles.logo} alt="Tingle logo" />
-        <div className={styles.textContainer}>
-          <Text as="h1" size="2xl" weight="bold" color="gray_700">
-            TINGLE
-          </Text>
-          <Text size="md" weight="medium" color="gray_500">
-            대학생 소속 인증 기반 매칭 플랫폼
-          </Text>
-        </div>
-      </div>
-
+      <Slogan />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className={styles.formContainer}

@@ -33,19 +33,6 @@ export const headerGroup = style({
   viewTransitionName: "tingle-header",
 });
 
-export const logo = style({
-  width: "200px",
-  height: "200px",
-});
-
-export const textContainer = style({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: "10px",
-});
-
 export const pwaBadgeWrapper = style({
   marginTop: "2rem",
 });
