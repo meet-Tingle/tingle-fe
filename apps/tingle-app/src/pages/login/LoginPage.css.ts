@@ -59,3 +59,11 @@ export const errorMessage = style({
   color: "#EF4444",
   marginTop: "4px",
 });
+
+export const loadingContainer = style({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "16px",
+  padding: "40px",
+});
