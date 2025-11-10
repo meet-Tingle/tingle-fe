@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { Button, Input, Spinner, Text } from "@tingle/ui";
+import { Button, Input, Spinner, Text, useToast } from "@tingle/ui";
 import { Suspense, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -57,6 +57,7 @@ const FormContainer = () => {
     null,
   );
   const router = useRouter();
+  const { toast } = useToast();
 
   const {
     register,
@@ -112,6 +113,7 @@ const FormContainer = () => {
       const promise = new Promise<void>((resolve) =>
         setTimeout(() => {
           router.navigate({ to: "/login" });
+          toast("회원가입이 성공적으로 완료되었습니다");
           resolve();
         }, 3000),
       );
