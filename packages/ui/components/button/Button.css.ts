@@ -15,6 +15,7 @@ export const baseButton = style({
   transition: "all 0.2s ease",
   outline: "none",
   userSelect: "none",
+  whiteSpace: "nowrap",
 
   ":focus-visible": {
     outline: `2px solid ${colors.focus}`,

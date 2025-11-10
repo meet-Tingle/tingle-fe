@@ -1,4 +1,20 @@
-import { style } from "@vanilla-extract/css";
+import { globalStyle, style } from "@vanilla-extract/css";
+
+globalStyle(
+  "::view-transition-old(tingle-header), ::view-transition-new(tingle-header)",
+  {
+    animationDuration: "0.3s",
+    animationTimingFunction: "ease-in-out",
+  },
+);
+
+globalStyle("::view-transition-old(root)", {
+  animationDuration: "0.3s",
+});
+
+globalStyle("::view-transition-new(root)", {
+  animationDuration: "0.3s",
+});
 
 export const container = style({
   display: "flex",
@@ -15,19 +31,6 @@ export const headerGroup = style({
   alignItems: "center",
   gap: "16px",
   viewTransitionName: "tingle-header",
-});
-
-export const logo = style({
-  width: "200px",
-  height: "200px",
-});
-
-export const textContainer = style({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: "10px",
 });
 
 export const pwaBadgeWrapper = style({

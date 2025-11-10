@@ -1,6 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Text } from "@tingle/ui";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  type Dispatch,
+  type SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type User = {
   id: string;
@@ -8,40 +14,28 @@ type User = {
 
 const AuthContext = createContext<{
   user: Nullable<User>;
+  setUser: Dispatch<SetStateAction<Nullable<User>>>;
 }>({
   user: null,
+  setUser: () => {},
 });
 
-// TODO: RQ 도입 후 Suspense 처리
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState<Nullable<User>>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const user = {
-      id: "test",
-    };
-    setUser(user);
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => {
-    if (!isLoading && !user) {
+    if (user) {
+      navigate({ to: "/profile" });
+    } else {
       navigate({ to: "/login" });
     }
-  }, [user, isLoading, navigate]);
-
-  if (isLoading) {
-    return (
-      <Text size="md" weight="bold" color="gray_600" align="center">
-        Loading...
-      </Text>
-    );
-  }
+  }, [user, navigate]);
 
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

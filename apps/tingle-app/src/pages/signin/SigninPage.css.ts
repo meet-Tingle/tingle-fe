@@ -36,10 +36,22 @@ export const inputWrapper = style({
   gap: "4px",
 });
 
+export const inputWithButton = style({
+  display: "flex",
+  gap: "8px",
+});
+
 export const label = style({
   fontSize: "14px",
   fontWeight: 600,
   color: "#374151",
+});
+
+export const passwordRules = style({
+  fontSize: "12px",
+  color: "#6B7280",
+  marginTop: "4px",
+  paddingLeft: "4px",
 });
 
 export const buttonGroup = style({
@@ -57,6 +69,12 @@ export const linkText = style({
 export const errorMessage = style({
   fontSize: "12px",
   color: "#EF4444",
+  marginTop: "4px",
+});
+
+export const successMessage = style({
+  fontSize: "12px",
+  color: "#10B981",
   marginTop: "4px",
 });
 
