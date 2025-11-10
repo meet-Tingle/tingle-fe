@@ -1,6 +1,6 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { Button, Input, Text } from "@tingle/ui";
-import { useCallback } from "react";
+import { Button, Input, Spinner, Text } from "@tingle/ui";
+import { Suspense, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Slogan from "@/components/slogan/Slogan";
@@ -33,6 +33,29 @@ const signinSchema = z
 type SigninFormData = z.infer<typeof signinSchema>;
 
 export default function SigninPage() {
+  return (
+    <div className={styles.container}>
+      <Slogan />
+      <Suspense
+        fallback={
+          <div className={styles.loadingContainer}>
+            <Spinner size="large" />
+            <Text size="md" weight="medium" color="gray_600">
+              회원가입 중...
+            </Text>
+          </div>
+        }
+      >
+        <FormContainer />
+      </Suspense>
+    </div>
+  );
+}
+
+const FormContainer = () => {
+  const [signinPromise, setSigninPromise] = useState<Promise<void> | null>(
+    null,
+  );
   const router = useRouter();
 
   const {
@@ -80,112 +103,120 @@ export default function SigninPage() {
   const onSubmit = useCallback(
     (data: SigninFormData) => {
       if (!data.idChecked) {
-        alert("아이디 중복 확인을 해주세요");
+        setError("idChecked", {
+          type: "manual",
+          message: "아이디 중복 확인을 해주세요",
+        });
         return;
       }
-      router.navigate({ to: "/login" });
+      const promise = new Promise<void>((resolve) =>
+        setTimeout(() => {
+          router.navigate({ to: "/login" });
+          resolve();
+        }, 3000),
+      );
+      setSigninPromise(promise);
     },
     [router],
   );
 
+  if (signinPromise) {
+    throw signinPromise;
+  }
+
   return (
-    <div className={styles.container}>
-      <Slogan />
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={styles.formContainer}
-        noValidate
-      >
-        <div className={styles.inputWrapper}>
-          <label htmlFor="userId" className={styles.label}>
-            아이디
-          </label>
-          <div className={styles.inputWithButton}>
-            <Input
-              id="userId"
-              type="text"
-              placeholder="영문, 숫자, _ 사용 가능"
-              size="full"
-              error={!!errors.userId && errors.userId.type !== "success"}
-              {...register("userId", {
-                onChange: () => setValue("idChecked", false),
-              })}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="fit"
-              onClick={handleIdCheck}
-            >
-              중복확인
-            </Button>
-          </div>
-          {errors.userId && (
-            <span
-              className={
-                errors.userId.type === "success"
-                  ? styles.successMessage
-                  : styles.errorMessage
-              }
-            >
-              {errors.userId.message}
-            </span>
-          )}
-        </div>
-
-        <div className={styles.inputWrapper}>
-          <label htmlFor="password" className={styles.label}>
-            비밀번호
-          </label>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={styles.formContainer}
+      noValidate
+    >
+      <div className={styles.inputWrapper}>
+        <label htmlFor="userId" className={styles.label}>
+          아이디
+        </label>
+        <div className={styles.inputWithButton}>
           <Input
-            id="password"
-            type="password"
-            placeholder="비밀번호를 입력하세요"
+            id="userId"
+            type="text"
+            placeholder="영문, 숫자, _ 사용 가능"
             size="full"
-            error={!!errors.password}
-            {...register("password")}
+            error={!!errors.userId && errors.userId.type !== "success"}
+            {...register("userId", {
+              onChange: () => setValue("idChecked", false),
+            })}
           />
-          <div className={styles.passwordRules}>
-            * 8자 이상, 대문자/소문자/숫자/특수문자 포함
-          </div>
-          {errors.password && (
-            <span className={styles.errorMessage}>
-              {errors.password.message}
-            </span>
-          )}
+          <Button
+            type="button"
+            variant="outline"
+            size="fit"
+            onClick={handleIdCheck}
+          >
+            중복확인
+          </Button>
         </div>
+        {errors.userId && (
+          <span
+            className={
+              errors.userId.type === "success"
+                ? styles.successMessage
+                : styles.errorMessage
+            }
+          >
+            {errors.userId.message}
+          </span>
+        )}
+      </div>
 
-        <div className={styles.inputWrapper}>
-          <label htmlFor="passwordConfirm" className={styles.label}>
-            비밀번호 확인
-          </label>
-          <Input
-            id="passwordConfirm"
-            type="password"
-            placeholder="비밀번호를 다시 입력하세요"
-            size="full"
-            error={!!errors.passwordConfirm}
-            {...register("passwordConfirm")}
-          />
-          {errors.passwordConfirm && (
-            <span className={styles.errorMessage}>
-              {errors.passwordConfirm.message}
-            </span>
-          )}
+      <div className={styles.inputWrapper}>
+        <label htmlFor="password" className={styles.label}>
+          비밀번호
+        </label>
+        <Input
+          id="password"
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          size="full"
+          error={!!errors.password}
+          {...register("password")}
+        />
+        <div className={styles.passwordRules}>
+          * 8자 이상, 대문자/소문자/숫자/특수문자 포함
         </div>
+        {errors.password && (
+          <span className={styles.errorMessage}>{errors.password.message}</span>
+        )}
+      </div>
 
-        <Button type="submit" variant="primary" size="default">
-          회원가입
-        </Button>
+      <div className={styles.inputWrapper}>
+        <label htmlFor="passwordConfirm" className={styles.label}>
+          비밀번호 확인
+        </label>
+        <Input
+          id="passwordConfirm"
+          type="password"
+          placeholder="비밀번호를 다시 입력하세요"
+          size="full"
+          error={!!errors.passwordConfirm}
+          {...register("passwordConfirm")}
+        />
+        {errors.passwordConfirm && (
+          <span className={styles.errorMessage}>
+            {errors.passwordConfirm.message}
+          </span>
+        )}
+      </div>
 
-        <div className={styles.linkText}>
-          <Link to="/login">
-            <Text size="sm" weight="medium" color="primary">
-              이미 계정이 있으신가요? 로그인
-            </Text>
-          </Link>
-        </div>
-      </form>
-    </div>
+      <Button type="submit" variant="primary" size="default">
+        회원가입
+      </Button>
+
+      <div className={styles.linkText}>
+        <Link to="/login">
+          <Text size="sm" weight="medium" color="primary">
+            이미 계정이 있으신가요? 로그인
+          </Text>
+        </Link>
+      </div>
+    </form>
   );
-}
+};
