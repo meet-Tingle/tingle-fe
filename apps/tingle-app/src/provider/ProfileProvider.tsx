@@ -1,5 +1,3 @@
-import { useNavigate } from "@tanstack/react-router";
-import { Text } from "@tingle/ui";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Profile = {
@@ -18,30 +16,31 @@ export const ProfileProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const navigate = useNavigate();
   const [profile, setProfile] = useState<Nullable<Profile>>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadingPromise, setLoadingPromise] = useState<Promise<void> | null>(
+    null,
+  );
 
   useEffect(() => {
     const profile = {
       id: "test",
     };
-    setProfile(profile);
-    setIsLoading(false);
+    const promise = new Promise<void>((resolve) => {
+      setTimeout(() => {
+        setProfile(profile);
+        setLoadingPromise(null);
+        resolve();
+      }, 3000);
+    });
+    setLoadingPromise(promise);
   }, []);
 
-  useEffect(() => {
-    if (!isLoading && !profile) {
-      navigate({ to: "/profile" });
-    }
-  }, [profile, isLoading, navigate]);
+  if (loadingPromise) {
+    throw loadingPromise;
+  }
 
-  if (isLoading) {
-    return (
-      <Text size="md" weight="bold" color="gray_600" align="center">
-        Loading...
-      </Text>
-    );
+  if (!profile) {
+    return null;
   }
 
   return (
