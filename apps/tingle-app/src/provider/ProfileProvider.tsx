@@ -1,7 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 type Profile = {
   id: string;
+  name?: string;
 };
 
 const ProfileContext = createContext<{
@@ -10,38 +12,45 @@ const ProfileContext = createContext<{
   profile: null,
 });
 
-// TODO: RQ 도입 후 Suspense 처리
 export const ProfileProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
+  const profileCheckRef = useRef<boolean>(false);
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<Nullable<Profile>>(null);
   const [loadingPromise, setLoadingPromise] = useState<Promise<void> | null>(
     null,
   );
 
   useEffect(() => {
-    const profile = {
+    const mockProfile = {
       id: "test",
     };
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => {
-        setProfile(profile);
+        setProfile(mockProfile);
         setLoadingPromise(null);
+        profileCheckRef.current = true;
         resolve();
       }, 3000);
     });
     setLoadingPromise(promise);
   }, []);
 
+  useEffect(() => {
+    if (!profileCheckRef.current) return;
+    if (profile) {
+      navigate({ to: "/main" });
+    }
+  }, [profile, navigate, profileCheckRef]);
+
   if (loadingPromise) {
     throw loadingPromise;
   }
 
-  if (!profile) {
-    return null;
-  }
+  if (!profileCheckRef.current) return null;
 
   return (
     <ProfileContext.Provider value={{ profile }}>
