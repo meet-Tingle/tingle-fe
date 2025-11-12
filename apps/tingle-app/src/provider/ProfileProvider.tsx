@@ -25,9 +25,9 @@ export const ProfileProvider = ({
   );
 
   useEffect(() => {
-    const _mockProfile = {
-      id: "test",
-    };
+    // const _mockProfile = {
+    //   id: "test",
+    // };
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => {
         // setProfile(mockProfile);
