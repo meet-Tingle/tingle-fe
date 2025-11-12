@@ -79,7 +79,10 @@ export default function Step05() {
         closeOnOverlayClick={true}
         closeOnSwipeDown={true}
       >
-        <div className={styles.bottomSheetContent}>
+        <div
+          className={styles.bottomSheetContent}
+          style={{ paddingBottom: "80px" }}
+        >
           <div className={styles.selectionContainer}>
             <div className={styles.selectionColumn}>
               <Text
@@ -170,16 +173,18 @@ export default function Step05() {
             </div>
           </div>
         </div>
-        <Button
-          variant="primary"
-          onClick={handleConfirm}
-          disabled={!selectedCollege || !selectedDepartment}
-        >
-          선택 완료
-        </Button>
-        <Button variant="ghost" onClick={closeBottomSheet}>
-          취소
-        </Button>
+        <div className={styles.buttonGroup}>
+          <Button variant="ghost" onClick={closeBottomSheet}>
+            취소
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleConfirm}
+            disabled={!selectedCollege || !selectedDepartment}
+          >
+            선택 완료
+          </Button>
+        </div>
       </BottomSheet>
     </section>
   );

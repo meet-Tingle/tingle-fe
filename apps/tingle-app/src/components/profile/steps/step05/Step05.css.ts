@@ -127,3 +127,16 @@ export const emptyState = style({
   justifyContent: "center",
   height: "200px",
 });
+
+export const buttonGroup = style({
+  position: "fixed",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  padding: "16px 24px",
+  backgroundColor: "white",
+  borderTop: "1px solid #E5E7EB",
+  display: "flex",
+  gap: "12px",
+  zIndex: 10,
+});
