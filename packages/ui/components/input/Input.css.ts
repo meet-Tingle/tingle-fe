@@ -45,6 +45,20 @@ export const baseInput = style({
     "&:disabled:hover": {
       borderColor: colors.borderLight,
     },
+
+    "&::-webkit-date-and-time-value": {
+      textAlign: "left",
+    },
+    "&::-webkit-datetime-edit": {
+      padding: 0,
+    },
+    "&::-webkit-datetime-edit-fields-wrapper": {
+      padding: 0,
+    },
+    "&::-webkit-calendar-picker-indicator": {
+      cursor: "pointer",
+      marginLeft: "4px",
+    },
   },
 });
 

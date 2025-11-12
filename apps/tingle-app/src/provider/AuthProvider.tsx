@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (user) {
       navigate({ to: "/profile" });
     } else {
-      navigate({ to: "/login" });
+      navigate({ to: "/" });
     }
   }, [user, navigate]);
 
