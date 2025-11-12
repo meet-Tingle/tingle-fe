@@ -4,7 +4,7 @@ import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
 import * as styles from "./FormStepLayout.css";
 
-export default function Step09Graduation() {
+export default function Step03() {
   const {
     register,
     formState: { errors },
@@ -23,13 +23,9 @@ export default function Step09Graduation() {
             borderRadius: "12px",
           }}
         >
-          <input
-            type="radio"
-            value="student"
-            {...register("graduationStatus")}
-          />
+          <input type="radio" value="male" {...register("gender")} />
           <Text size="md" weight="medium" color="gray_700">
-            재학생
+            남성
           </Text>
         </label>
         <label
@@ -42,17 +38,13 @@ export default function Step09Graduation() {
             borderRadius: "12px",
           }}
         >
-          <input
-            type="radio"
-            value="graduate"
-            {...register("graduationStatus")}
-          />
+          <input type="radio" value="female" {...register("gender")} />
           <Text size="md" weight="medium" color="gray_700">
-            졸업생
+            여성
           </Text>
         </label>
-        {errors.graduationStatus ? (
-          <span style={errorTextStyle}>{errors.graduationStatus.message}</span>
+        {errors.gender ? (
+          <span style={errorTextStyle}>{errors.gender.message}</span>
         ) : null}
       </div>
     </section>

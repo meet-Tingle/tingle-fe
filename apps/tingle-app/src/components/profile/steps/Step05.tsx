@@ -4,7 +4,7 @@ import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
 import * as styles from "./FormStepLayout.css";
 
-export default function Step05Department() {
+export default function Step05() {
   const {
     register,
     setValue,

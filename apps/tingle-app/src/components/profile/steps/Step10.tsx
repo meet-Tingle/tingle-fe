@@ -6,7 +6,7 @@ import * as styles from "./FormStepLayout.css";
 
 const MAX_GENERATION = 3;
 
-export default function Step10AiImage() {
+export default function Step10() {
   const {
     register,
     watch,

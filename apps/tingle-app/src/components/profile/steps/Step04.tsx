@@ -14,7 +14,7 @@ const groupStyle: CSSProperties = {
   borderRadius: "12px",
 };
 
-export default function Step04Mbti() {
+export default function Step04() {
   const {
     register,
     formState: { errors },

@@ -13,7 +13,7 @@ const INTEREST_OPTIONS = [
   "맛집 탐방",
 ];
 
-export default function Step08Interests() {
+export default function Step08() {
   const {
     register,
     watch,

@@ -4,7 +4,7 @@ import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
 import * as styles from "./FormStepLayout.css";
 
-export default function Step02Birthdate() {
+export default function Step06() {
   const {
     register,
     formState: { errors },
@@ -14,16 +14,16 @@ export default function Step02Birthdate() {
     <section className={styles.content}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <Text size="md" weight="medium" color="gray_600">
-          생년월일
+          입학 연도
         </Text>
         <Input
           size="full"
-          type="date"
-          placeholder="YYYY-MM-DD"
-          {...register("birthdate")}
+          type="number"
+          placeholder="예) 2021"
+          {...register("studentId")}
         />
-        {errors.birthdate ? (
-          <span style={errorTextStyle}>{errors.birthdate.message}</span>
+        {errors.studentId ? (
+          <span style={errorTextStyle}>{errors.studentId.message}</span>
         ) : null}
       </div>
     </section>

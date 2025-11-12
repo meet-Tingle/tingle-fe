@@ -4,7 +4,7 @@ import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
 import * as styles from "./FormStepLayout.css";
 
-export default function Step01Nickname() {
+export default function Step07() {
   const {
     register,
     formState: { errors },
@@ -14,15 +14,15 @@ export default function Step01Nickname() {
     <section className={styles.content}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <Text size="md" weight="medium" color="gray_600">
-          닉네임
+          카카오톡 ID
         </Text>
         <Input
           size="full"
-          placeholder="예) tingle_lover"
-          {...register("nickname")}
+          placeholder="예) tingle1234"
+          {...register("kakaoId")}
         />
-        {errors.nickname ? (
-          <span style={errorTextStyle}>{errors.nickname.message}</span>
+        {errors.kakaoId ? (
+          <span style={errorTextStyle}>{errors.kakaoId.message}</span>
         ) : null}
       </div>
     </section>

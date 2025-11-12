@@ -5,17 +5,17 @@ import BottomContainer from "@/components/common/BottomContainer/BottomContainer
 import { ProfileFooter } from "@/components/profile/ProfileFooter";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import * as styles from "@/components/profile/steps/ProfileBofy.css";
-import Step01Nickname from "@/components/profile/steps/Step01Nickname";
-import Step02Birthdate from "@/components/profile/steps/Step02Birthdate";
-import Step03Gender from "@/components/profile/steps/Step03Gender";
-import Step04Mbti from "@/components/profile/steps/Step04Mbti";
-import Step05Department from "@/components/profile/steps/Step05Department";
-import Step06StudentId from "@/components/profile/steps/Step06StudentId";
-import Step07KakaoId from "@/components/profile/steps/Step07KakaoId";
-import Step08Interests from "@/components/profile/steps/Step08Interests";
-import Step09Graduation from "@/components/profile/steps/Step09Graduation";
-import Step10AiImage from "@/components/profile/steps/Step10AiImage";
-import Step11Summary from "@/components/profile/steps/Step11Summary";
+import Step01 from "@/components/profile/steps/Step01";
+import Step02 from "@/components/profile/steps/Step02";
+import Step03 from "@/components/profile/steps/Step03";
+import Step04 from "@/components/profile/steps/Step04";
+import Step05 from "@/components/profile/steps/Step05";
+import Step06 from "@/components/profile/steps/Step06";
+import Step07 from "@/components/profile/steps/Step07";
+import Step08 from "@/components/profile/steps/Step08";
+import Step09 from "@/components/profile/steps/Step09";
+import Step10 from "@/components/profile/steps/Step10";
+import Step11 from "@/components/profile/steps/Step11";
 import type { StepComponentProps } from "@/components/profile/steps/types";
 import { customResolver } from "@/utils/zodCustomResolver";
 
@@ -70,67 +70,67 @@ type StepDefinition = {
 
 const steps: StepDefinition[] = [
   {
-    Component: Step01Nickname,
+    Component: Step01,
     fields: ["nickname"],
     title: "닉네임을 알려주세요",
     description: "2자 이상 입력하면 다음 단계로 이동할 수 있어요.",
   },
   {
-    Component: Step02Birthdate,
+    Component: Step02,
     fields: ["birthdate"],
     title: "생년월일을 알려주세요",
     description: "기본 정보는 안전하게 보관돼요.",
   },
   {
-    Component: Step03Gender,
+    Component: Step03,
     fields: ["gender"],
     title: "성별을 선택해주세요",
     description: "성별 정보는 매칭 추천에 활용돼요.",
   },
   {
-    Component: Step04Mbti,
+    Component: Step04,
     fields: ["mbtiEI", "mbtiSN", "mbtiFT", "mbtiPJ"],
     title: "MBTI를 선택해주세요",
     description: "각 항목에서 자신과 더 가까운 성향을 고르면 돼요.",
   },
   {
-    Component: Step05Department,
+    Component: Step05,
     fields: ["department"],
     title: "어디에서 공부하고 있나요?",
     description: "단과대와 학과 정보를 입력해주세요.",
   },
   {
-    Component: Step06StudentId,
+    Component: Step06,
     fields: ["studentId"],
     title: "입학 연도를 알려주세요",
     description: "입학 연도는 4자리 숫자로 입력해주세요.",
   },
   {
-    Component: Step07KakaoId,
+    Component: Step07,
     fields: ["kakaoId"],
     title: "카카오톡 ID를 입력해주세요",
     description: "상대와 연결될 카카오톡 ID를 입력해주세요.",
   },
   {
-    Component: Step08Interests,
+    Component: Step08,
     fields: ["interests", "interestsNote"],
     title: "관심사와 취미를 알려주세요",
     description: "선호하는 활동을 선택하거나 2자 이상 직접 입력할 수 있어요.",
   },
   {
-    Component: Step09Graduation,
+    Component: Step09,
     fields: ["graduationStatus"],
     title: "재학 여부를 알려주세요",
     description: "재학생인지, 졸업생인지 선택해주세요.",
   },
   {
-    Component: Step10AiImage,
+    Component: Step10,
     fields: ["aiPrompt"],
     title: "AI 이미지 프롬프트를 작성해주세요",
     description: "프롬프트를 기반으로 자신을 닮은 이미지를 생성해볼 수 있어요.",
   },
   {
-    Component: Step11Summary,
+    Component: Step11,
     fields: ["selectedImage"],
     title: "입력 내용을 확인해주세요",
     description:
