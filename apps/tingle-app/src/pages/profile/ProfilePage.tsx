@@ -3,6 +3,8 @@ import { FormProvider, type Path, useForm } from "react-hook-form";
 import { z } from "zod";
 import BottomContainer from "@/components/common/BottomContainer/BottomContainer";
 import { ProfileFooter } from "@/components/profile/ProfileFooter";
+import { ProfileHeader } from "@/components/profile/ProfileHeader";
+import * as styles from "@/components/profile/steps/ProfileBofy.css";
 import Step01Nickname from "@/components/profile/steps/Step01Nickname";
 import Step02Birthdate from "@/components/profile/steps/Step02Birthdate";
 import Step03Gender from "@/components/profile/steps/Step03Gender";
@@ -62,20 +64,78 @@ export type ProfileFormValues = z.infer<typeof profileFormSchema>;
 type StepDefinition = {
   Component: ComponentType<StepComponentProps>;
   fields: Path<ProfileFormValues>[];
+  title: string;
+  description?: string;
 };
 
 const steps: StepDefinition[] = [
-  { Component: Step01Nickname, fields: ["nickname"] },
-  { Component: Step02Birthdate, fields: ["birthdate"] },
-  { Component: Step03Gender, fields: ["gender"] },
-  { Component: Step04Mbti, fields: ["mbtiEI", "mbtiSN", "mbtiFT", "mbtiPJ"] },
-  { Component: Step05Department, fields: ["department"] },
-  { Component: Step06StudentId, fields: ["studentId"] },
-  { Component: Step07KakaoId, fields: ["kakaoId"] },
-  { Component: Step08Interests, fields: ["interests", "interestsNote"] },
-  { Component: Step09Graduation, fields: ["graduationStatus"] },
-  { Component: Step10AiImage, fields: ["aiPrompt"] },
-  { Component: Step11Summary, fields: ["selectedImage"] },
+  {
+    Component: Step01Nickname,
+    fields: ["nickname"],
+    title: "닉네임을 알려주세요",
+    description: "2자 이상 입력하면 다음 단계로 이동할 수 있어요.",
+  },
+  {
+    Component: Step02Birthdate,
+    fields: ["birthdate"],
+    title: "생년월일을 알려주세요",
+    description: "기본 정보는 안전하게 보관돼요.",
+  },
+  {
+    Component: Step03Gender,
+    fields: ["gender"],
+    title: "성별을 선택해주세요",
+    description: "성별 정보는 매칭 추천에 활용돼요.",
+  },
+  {
+    Component: Step04Mbti,
+    fields: ["mbtiEI", "mbtiSN", "mbtiFT", "mbtiPJ"],
+    title: "MBTI를 선택해주세요",
+    description: "각 항목에서 자신과 더 가까운 성향을 고르면 돼요.",
+  },
+  {
+    Component: Step05Department,
+    fields: ["department"],
+    title: "어디에서 공부하고 있나요?",
+    description: "단과대와 학과 정보를 입력해주세요.",
+  },
+  {
+    Component: Step06StudentId,
+    fields: ["studentId"],
+    title: "입학 연도를 알려주세요",
+    description: "입학 연도는 4자리 숫자로 입력해주세요.",
+  },
+  {
+    Component: Step07KakaoId,
+    fields: ["kakaoId"],
+    title: "카카오톡 ID를 입력해주세요",
+    description: "상대와 연결될 카카오톡 ID를 입력해주세요.",
+  },
+  {
+    Component: Step08Interests,
+    fields: ["interests", "interestsNote"],
+    title: "관심사와 취미를 알려주세요",
+    description: "선호하는 활동을 선택하거나 2자 이상 직접 입력할 수 있어요.",
+  },
+  {
+    Component: Step09Graduation,
+    fields: ["graduationStatus"],
+    title: "재학 여부를 알려주세요",
+    description: "재학생인지, 졸업생인지 선택해주세요.",
+  },
+  {
+    Component: Step10AiImage,
+    fields: ["aiPrompt"],
+    title: "AI 이미지 프롬프트를 작성해주세요",
+    description: "프롬프트를 기반으로 자신을 닮은 이미지를 생성해볼 수 있어요.",
+  },
+  {
+    Component: Step11Summary,
+    fields: ["selectedImage"],
+    title: "입력 내용을 확인해주세요",
+    description:
+      "선택한 이미지와 정보를 검토한 뒤, 대학교 인증 단계로 이동할 수 있어요.",
+  },
 ];
 
 const defaultValues: ProfileFormValues = {
@@ -113,6 +173,10 @@ export default function ProfilePage() {
 
   const totalSteps = steps.length;
   const isLastStep = currentStep === totalSteps - 1;
+  const isFirstStep = currentStep === 0;
+  const canProceed = Boolean(
+    currentStep < totalSteps - 1 || methods.watch("selectedImage"),
+  );
 
   const handlePrev = useCallback(() => {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
@@ -129,16 +193,8 @@ export default function ProfilePage() {
     setCurrentStep((prev) => Math.min(prev + 1, totalSteps - 1));
   }, [currentStep, methods, totalSteps]);
 
-  const StepComponent = useMemo(() => {
-    const step = steps[currentStep];
-    return step.Component;
-  }, [currentStep]);
-
-  const isFirstStep = currentStep === 0;
-
-  const canProceed = Boolean(
-    currentStep < 10 || methods.watch("selectedImage"),
-  );
+  const currentStepInfo = useMemo(() => steps[currentStep], [currentStep]);
+  const StepComponent = currentStepInfo.Component;
 
   return (
     <BottomContainer>
@@ -147,7 +203,15 @@ export default function ProfilePage() {
           onSubmit={methods.handleSubmit(onSubmit)}
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
-          <StepComponent stepIndex={currentStep} totalSteps={totalSteps} />
+          <ProfileHeader
+            title={currentStepInfo.title}
+            description={currentStepInfo.description}
+            stepIndex={currentStep}
+            totalSteps={totalSteps}
+          />
+          <section className={styles.profileBody}>
+            <StepComponent />
+          </section>
           <BottomContainer.Bottom>
             <ProfileFooter
               isFirstStep={isFirstStep}

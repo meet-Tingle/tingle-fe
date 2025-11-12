@@ -2,25 +2,16 @@ import { Text } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
-import FormStepLayout from "./FormStepLayout";
-import type { StepComponentProps } from "./types";
+import * as styles from "./FormStepLayout.css";
 
-export default function Step09Graduation({
-  stepIndex,
-  totalSteps,
-}: StepComponentProps) {
+export default function Step09Graduation() {
   const {
     register,
     formState: { errors },
   } = useFormContext<ProfileFormValues>();
 
   return (
-    <FormStepLayout
-      title="재학 여부를 알려주세요"
-      description="재학생인지, 졸업생인지 선택해주세요."
-      stepIndex={stepIndex}
-      totalSteps={totalSteps}
-    >
+    <section className={styles.content}>
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         <label
           style={{
@@ -64,6 +55,6 @@ export default function Step09Graduation({
           <span style={errorTextStyle}>{errors.graduationStatus.message}</span>
         ) : null}
       </div>
-    </FormStepLayout>
+    </section>
   );
 }

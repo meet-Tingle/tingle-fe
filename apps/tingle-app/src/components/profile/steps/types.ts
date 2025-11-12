@@ -1,4 +1,1 @@
-export type StepComponentProps = {
-  stepIndex: number;
-  totalSteps: number;
-};
+export type StepComponentProps = Record<string, never>;

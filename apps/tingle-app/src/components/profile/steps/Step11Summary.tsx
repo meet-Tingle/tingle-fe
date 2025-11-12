@@ -2,13 +2,9 @@ import { Text } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
-import FormStepLayout from "./FormStepLayout";
-import type { StepComponentProps } from "./types";
+import * as styles from "./FormStepLayout.css";
 
-export default function Step11Summary({
-  stepIndex,
-  totalSteps,
-}: StepComponentProps) {
+export default function Step11Summary() {
   const {
     watch,
     formState: { errors },
@@ -19,12 +15,7 @@ export default function Step11Summary({
   const hasSelectedImage = Boolean(values.selectedImage);
 
   return (
-    <FormStepLayout
-      title="입력 내용을 확인해주세요"
-      description="선택한 이미지와 정보를 검토한 뒤, 대학교 인증 단계로 이동할 수 있어요."
-      stepIndex={stepIndex}
-      totalSteps={totalSteps}
-    >
+    <section className={styles.content}>
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <section
           style={{
@@ -96,7 +87,7 @@ export default function Step11Summary({
           ) : null}
         </section>
       </div>
-    </FormStepLayout>
+    </section>
   );
 }
 

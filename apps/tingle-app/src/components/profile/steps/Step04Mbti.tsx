@@ -3,8 +3,7 @@ import type { CSSProperties } from "react";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
-import FormStepLayout from "./FormStepLayout";
-import type { StepComponentProps } from "./types";
+import * as styles from "./FormStepLayout.css";
 
 const groupStyle: CSSProperties = {
   display: "flex",
@@ -15,22 +14,14 @@ const groupStyle: CSSProperties = {
   borderRadius: "12px",
 };
 
-export default function Step04Mbti({
-  stepIndex,
-  totalSteps,
-}: StepComponentProps) {
+export default function Step04Mbti() {
   const {
     register,
     formState: { errors },
   } = useFormContext<ProfileFormValues>();
 
   return (
-    <FormStepLayout
-      title="MBTI를 선택해주세요"
-      description="각 항목에서 자신과 더 가까운 성향을 고르면 돼요."
-      stepIndex={stepIndex}
-      totalSteps={totalSteps}
-    >
+    <section className={styles.content}>
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           <Text size="md" weight="medium" color="gray_600">
@@ -116,6 +107,6 @@ export default function Step04Mbti({
           <span style={errorTextStyle}>{errors.mbtiEI.message}</span>
         ) : null}
       </div>
-    </FormStepLayout>
+    </section>
   );
 }

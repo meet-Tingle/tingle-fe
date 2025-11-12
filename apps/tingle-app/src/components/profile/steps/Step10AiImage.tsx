@@ -2,15 +2,11 @@ import { Button, Text } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
-import FormStepLayout from "./FormStepLayout";
-import type { StepComponentProps } from "./types";
+import * as styles from "./FormStepLayout.css";
 
 const MAX_GENERATION = 3;
 
-export default function Step10AiImage({
-  stepIndex,
-  totalSteps,
-}: StepComponentProps) {
+export default function Step10AiImage() {
   const {
     register,
     watch,
@@ -61,12 +57,7 @@ export default function Step10AiImage({
   const remaining = Math.max(0, MAX_GENERATION - generationCount);
 
   return (
-    <FormStepLayout
-      title="AI 이미지 프롬프트를 작성해주세요"
-      description="프롬프트를 기반으로 자신을 닮은 이미지를 생성해볼 수 있어요."
-      stepIndex={stepIndex}
-      totalSteps={totalSteps}
-    >
+    <section className={styles.content}>
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           <Text size="md" weight="medium" color="gray_600">
@@ -162,6 +153,6 @@ export default function Step10AiImage({
           <span style={errorTextStyle}>{errors.aiGenerationCount.message}</span>
         ) : null}
       </div>
-    </FormStepLayout>
+    </section>
   );
 }

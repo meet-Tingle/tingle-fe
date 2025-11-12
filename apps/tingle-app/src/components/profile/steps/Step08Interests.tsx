@@ -2,8 +2,7 @@ import { Text } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
-import FormStepLayout from "./FormStepLayout";
-import type { StepComponentProps } from "./types";
+import * as styles from "./FormStepLayout.css";
 
 const INTEREST_OPTIONS = [
   "음악",
@@ -14,10 +13,7 @@ const INTEREST_OPTIONS = [
   "맛집 탐방",
 ];
 
-export default function Step08Interests({
-  stepIndex,
-  totalSteps,
-}: StepComponentProps) {
+export default function Step08Interests() {
   const {
     register,
     watch,
@@ -27,12 +23,7 @@ export default function Step08Interests({
   const selected = watch("interests");
 
   return (
-    <FormStepLayout
-      title="관심사와 취미를 알려주세요"
-      description="선호하는 활동을 선택하거나 2자 이상 직접 입력할 수 있어요."
-      stepIndex={stepIndex}
-      totalSteps={totalSteps}
-    >
+    <section className={styles.content}>
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           <Text size="md" weight="medium" color="gray_600">
@@ -90,6 +81,6 @@ export default function Step08Interests({
           <span style={errorTextStyle}>{errors.interests.message}</span>
         ) : null}
       </div>
-    </FormStepLayout>
+    </section>
   );
 }

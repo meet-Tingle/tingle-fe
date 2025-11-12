@@ -2,13 +2,9 @@ import { Button, Input, Text } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
 import { errorTextStyle } from "./constants";
-import FormStepLayout from "./FormStepLayout";
-import type { StepComponentProps } from "./types";
+import * as styles from "./FormStepLayout.css";
 
-export default function Step05Department({
-  stepIndex,
-  totalSteps,
-}: StepComponentProps) {
+export default function Step05Department() {
   const {
     register,
     setValue,
@@ -24,12 +20,7 @@ export default function Step05Department({
   };
 
   return (
-    <FormStepLayout
-      title="어디에서 공부하고 있나요?"
-      description="단과대와 학과 정보를 입력해주세요."
-      stepIndex={stepIndex}
-      totalSteps={totalSteps}
-    >
+    <section className={styles.content}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         <Text size="md" weight="medium" color="gray_600">
           학과
@@ -49,6 +40,6 @@ export default function Step05Department({
           * 실제 서비스에서는 바텀시트에서 학과를 선택할 수 있어요.
         </Text>
       </div>
-    </FormStepLayout>
+    </section>
   );
 }
