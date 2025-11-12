@@ -1,3 +1,4 @@
+import { useRouter } from "@tanstack/react-router";
 import { type ComponentType, useCallback, useMemo, useState } from "react";
 import { FormProvider, type Path, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -161,6 +162,7 @@ const defaultValues: ProfileFormValues = {
 };
 
 export default function ProfilePage() {
+  const router = useRouter();
   const methods = useForm<ProfileFormValues>({
     mode: "onBlur",
     defaultValues,
@@ -203,6 +205,7 @@ export default function ProfilePage() {
       e.preventDefault();
       if (isLastStep) {
         methods.handleSubmit(onSubmit)(e);
+        router.navigate({ to: "/main" });
       } else {
         handleNext();
       }

@@ -1,3 +1,4 @@
+export * from "./components/bottom-sheet";
 export * from "./components/button";
 export * from "./components/checkbox";
 export * from "./components/icon";
