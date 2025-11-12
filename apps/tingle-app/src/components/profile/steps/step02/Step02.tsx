@@ -1,8 +1,8 @@
 import { Input, Text } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
-import { errorTextStyle } from "./constants";
-import * as styles from "./FormStepLayout.css";
+import { errorTextStyle } from "../constants";
+import * as styles from "./Step02.css";
 
 export default function Step02() {
   const {
@@ -11,8 +11,8 @@ export default function Step02() {
   } = useFormContext<ProfileFormValues>();
 
   return (
-    <section className={styles.content}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+    <section className={styles.container}>
+      <div className={styles.fieldContainer}>
         <Text size="md" weight="medium" color="gray_600">
           생년월일
         </Text>
@@ -20,6 +20,7 @@ export default function Step02() {
           size="full"
           type="date"
           placeholder="YYYY-MM-DD"
+          max="9999-12-31"
           {...register("birthdate")}
         />
         {errors.birthdate ? (

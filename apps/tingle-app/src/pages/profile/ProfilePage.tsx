@@ -4,25 +4,27 @@ import { z } from "zod";
 import BottomContainer from "@/components/common/BottomContainer/BottomContainer";
 import { ProfileFooter } from "@/components/profile/ProfileFooter";
 import { ProfileHeader } from "@/components/profile/ProfileHeader";
-import * as styles from "@/components/profile/steps/ProfileBofy.css";
-import Step01 from "@/components/profile/steps/Step01";
-import Step02 from "@/components/profile/steps/Step02";
-import Step03 from "@/components/profile/steps/Step03";
-import Step04 from "@/components/profile/steps/Step04";
-import Step05 from "@/components/profile/steps/Step05";
-import Step06 from "@/components/profile/steps/Step06";
-import Step07 from "@/components/profile/steps/Step07";
-import Step08 from "@/components/profile/steps/Step08";
-import Step09 from "@/components/profile/steps/Step09";
-import Step10 from "@/components/profile/steps/Step10";
-import Step11 from "@/components/profile/steps/Step11";
+import Step01 from "@/components/profile/steps/step01/Step01";
+import Step02 from "@/components/profile/steps/step02/Step02";
+import Step03 from "@/components/profile/steps/step03/Step03";
+import Step04 from "@/components/profile/steps/step04/Step04";
+import Step05 from "@/components/profile/steps/step05/Step05";
+import Step06 from "@/components/profile/steps/step06/Step06";
+import Step07 from "@/components/profile/steps/step07/Step07";
+import Step08 from "@/components/profile/steps/step08/Step08";
+import Step09 from "@/components/profile/steps/step09/Step09";
+import Step10 from "@/components/profile/steps/step10/Step10";
+import Step11 from "@/components/profile/steps/step11/Step11";
 import type { StepComponentProps } from "@/components/profile/steps/types";
 import { customResolver } from "@/utils/zodCustomResolver";
 
 const profileFormSchema = z
   .object({
     nickname: z.string().min(2, "닉네임은 2자 이상 입력해주세요."),
-    birthdate: z.string().min(1, "생년월일을 선택해주세요."),
+    birthdate: z
+      .string()
+      .min(1, "생년월일을 선택해주세요.")
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "생년월일은 YYYY-MM-DD 형식이어야 합니다."),
     gender: z.enum(["male", "female"] as const),
     mbtiEI: z.enum(["E", "I"] as const),
     mbtiSN: z.enum(["S", "N"] as const),
@@ -38,7 +40,7 @@ const profileFormSchema = z
     graduationStatus: z.enum(["student", "graduate"] as const),
     aiPrompt: z
       .string()
-      .min(20, "AI 이미지 프롬프트를 20자 이상 입력해주세요."),
+      .min(10, "AI 이미지 프롬프트를 10자 이상 입력해주세요."),
     aiGenerationCount: z
       .number()
       .min(0)
@@ -196,11 +198,23 @@ export default function ProfilePage() {
   const currentStepInfo = useMemo(() => steps[currentStep], [currentStep]);
   const StepComponent = currentStepInfo.Component;
 
+  const handleFormSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (isLastStep) {
+        methods.handleSubmit(onSubmit)(e);
+      } else {
+        handleNext();
+      }
+    },
+    [isLastStep, methods, onSubmit, handleNext],
+  );
+
   return (
     <BottomContainer>
       <FormProvider {...methods}>
         <form
-          onSubmit={methods.handleSubmit(onSubmit)}
+          onSubmit={handleFormSubmit}
           style={{ display: "flex", flexDirection: "column", height: "100%" }}
         >
           <ProfileHeader
@@ -209,9 +223,7 @@ export default function ProfilePage() {
             stepIndex={currentStep}
             totalSteps={totalSteps}
           />
-          <section className={styles.profileBody}>
-            <StepComponent />
-          </section>
+          <StepComponent />
           <BottomContainer.Bottom>
             <ProfileFooter
               isFirstStep={isFirstStep}

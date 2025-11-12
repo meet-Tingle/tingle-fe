@@ -1,8 +1,8 @@
 import { Input, Text } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
-import { errorTextStyle } from "./constants";
-import * as styles from "./FormStepLayout.css";
+import { errorTextStyle } from "../constants";
+import * as styles from "./Step01.css";
 
 export default function Step01() {
   const {
@@ -11,16 +11,12 @@ export default function Step01() {
   } = useFormContext<ProfileFormValues>();
 
   return (
-    <section className={styles.content}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+    <section className={styles.container}>
+      <div className={styles.fieldContainer}>
         <Text size="md" weight="medium" color="gray_600">
           닉네임
         </Text>
-        <Input
-          size="full"
-          placeholder="예) tingle_lover"
-          {...register("nickname")}
-        />
+        <Input size="full" placeholder="예) 이강민" {...register("nickname")} />
         {errors.nickname ? (
           <span style={errorTextStyle}>{errors.nickname.message}</span>
         ) : null}

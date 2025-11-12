@@ -1,8 +1,8 @@
 import { Button, Input, Text } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
-import { errorTextStyle } from "./constants";
-import * as styles from "./FormStepLayout.css";
+import { errorTextStyle } from "../constants";
+import * as styles from "./Step05.css";
 
 export default function Step05() {
   const {
@@ -20,8 +20,8 @@ export default function Step05() {
   };
 
   return (
-    <section className={styles.content}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+    <section className={styles.container}>
+      <div className={styles.fieldContainer}>
         <Text size="md" weight="medium" color="gray_600">
           학과
         </Text>

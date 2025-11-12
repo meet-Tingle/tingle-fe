@@ -1,8 +1,8 @@
-import { Button, Text } from "@tingle/ui";
+import { Button, Text, Textarea } from "@tingle/ui";
 import { useFormContext } from "react-hook-form";
 import type { ProfileFormValues } from "@/pages/profile/ProfilePage";
-import { errorTextStyle } from "./constants";
-import * as styles from "./FormStepLayout.css";
+import { errorTextStyle } from "../constants";
+import * as styles from "./Step10.css";
 
 const MAX_GENERATION = 3;
 
@@ -57,22 +57,16 @@ export default function Step10() {
   const remaining = Math.max(0, MAX_GENERATION - generationCount);
 
   return (
-    <section className={styles.content}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+    <section className={styles.container}>
+      <div className={styles.sectionContainer}>
+        <div className={styles.fieldContainer}>
           <Text size="md" weight="medium" color="gray_600">
             프롬프트
           </Text>
-          <textarea
+          <Textarea
             rows={5}
             placeholder="예) 20대 초반, 밝은 미소, 대학생 느낌, 자연광 스튜디오..."
-            style={{
-              width: "100%",
-              padding: "12px",
-              borderRadius: "12px",
-              border: "1px solid #e5e7eb",
-              resize: "vertical",
-            }}
+            error={!!errors.aiPrompt}
             {...register("aiPrompt")}
           />
           {errors.aiPrompt ? (
@@ -80,7 +74,7 @@ export default function Step10() {
           ) : null}
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div className={styles.buttonContainer}>
           <Button
             type="button"
             onClick={handleGenerate}
@@ -93,16 +87,15 @@ export default function Step10() {
           <Text size="sm" weight="medium" color="gray_500">
             최대 {MAX_GENERATION}회까지 생성할 수 있어요.
           </Text>
+          {remaining === 0 ? (
+            <span style={errorTextStyle}>
+              이미지는 최대 {MAX_GENERATION}회까지만 생성할 수 있어요.
+            </span>
+          ) : null}
         </div>
 
         {generatedImages.length > 0 ? (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-              gap: "12px",
-            }}
-          >
+          <div className={styles.imageGrid}>
             {generatedImages.map((imageId) => {
               const isSelected = selectedImage === imageId;
               return (
@@ -110,45 +103,30 @@ export default function Step10() {
                   key={imageId}
                   type="button"
                   onClick={() => handleSelect(imageId)}
+                  className={styles.imageButton}
                   style={{
-                    height: "120px",
-                    borderRadius: "16px",
-                    border: `2px solid ${isSelected ? "#6366f1" : "#e5e7eb"}`,
-                    backgroundColor: isSelected ? "#eef2ff" : "#f9fafb",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "14px",
-                    color: "#4b5563",
+                    border: `2px solid ${isSelected ? "#0080FF" : "#D1D5DB"}`,
+                    backgroundColor: isSelected ? "#E6F2FF" : "#FFFFFF",
                   }}
                 >
-                  {isSelected ? "선택됨" : "미리보기"}
+                  <Text
+                    size="sm"
+                    weight="medium"
+                    color={isSelected ? "blue_600" : "gray_600"}
+                  >
+                    {isSelected ? "선택됨" : "미리보기"}
+                  </Text>
                 </button>
               );
             })}
           </div>
         ) : (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "1px dashed #cbd5f5",
-              borderRadius: "16px",
-              padding: "40px",
-              color: "#94a3b8",
-              textAlign: "center",
-            }}
-          >
-            프롬프트를 작성하고 이미지를 생성하면 이곳에서 확인할 수 있어요.
+          <div className={styles.emptyState}>
+            <Text size="md" weight="medium" color="gray_400">
+              프롬프트를 작성하고 이미지를 생성하면 이곳에서 확인할 수 있어요.
+            </Text>
           </div>
         )}
-
-        {remaining === 0 ? (
-          <span style={errorTextStyle}>
-            이미지는 최대 {MAX_GENERATION}회까지만 생성할 수 있어요.
-          </span>
-        ) : null}
         {errors.aiGenerationCount ? (
           <span style={errorTextStyle}>{errors.aiGenerationCount.message}</span>
         ) : null}
