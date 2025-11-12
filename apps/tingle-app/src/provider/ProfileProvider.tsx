@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type Profile = {
   id: string;
@@ -17,22 +17,22 @@ export const ProfileProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const profileCheckRef = useRef<boolean>(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<Nullable<Profile>>(null);
+  const [profile, _setProfile] = useState<Nullable<Profile>>(null);
   const [loadingPromise, setLoadingPromise] = useState<Promise<void> | null>(
     null,
   );
 
   useEffect(() => {
-    const mockProfile = {
+    const _mockProfile = {
       id: "test",
     };
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => {
-        setProfile(mockProfile);
+        // setProfile(mockProfile);
         setLoadingPromise(null);
-        profileCheckRef.current = true;
+        setIsInitialized(true);
         resolve();
       }, 3000);
     });
@@ -40,17 +40,17 @@ export const ProfileProvider = ({
   }, []);
 
   useEffect(() => {
-    if (!profileCheckRef.current) return;
+    if (!isInitialized) return;
     if (profile) {
       navigate({ to: "/main" });
     }
-  }, [profile, navigate, profileCheckRef]);
+  }, [profile, navigate]);
 
   if (loadingPromise) {
     throw loadingPromise;
   }
 
-  if (!profileCheckRef.current) return null;
+  if (!isInitialized) return null;
 
   return (
     <ProfileContext.Provider value={{ profile }}>
