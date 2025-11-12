@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SigninIndexRouteImport } from './routes/signin/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as WithAuthWithProfileRouteImport } from './routes/_withAuth/_withProfile'
+import { Route as WithAuthWithProfileProfileIndexRouteImport } from './routes/_withAuth/_withProfile/profile/index'
 import { Route as WithAuthWithProfileMainIndexRouteImport } from './routes/_withAuth/_withProfile/main/index'
 
 const WithAuthRoute = WithAuthRouteImport.update({
@@ -39,6 +40,12 @@ const WithAuthWithProfileRoute = WithAuthWithProfileRouteImport.update({
   id: '/_withProfile',
   getParentRoute: () => WithAuthRoute,
 } as any)
+const WithAuthWithProfileProfileIndexRoute =
+  WithAuthWithProfileProfileIndexRouteImport.update({
+    id: '/profile/',
+    path: '/profile/',
+    getParentRoute: () => WithAuthWithProfileRoute,
+  } as any)
 const WithAuthWithProfileMainIndexRoute =
   WithAuthWithProfileMainIndexRouteImport.update({
     id: '/main/',
@@ -51,12 +58,14 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginIndexRoute
   '/signin': typeof SigninIndexRoute
   '/main': typeof WithAuthWithProfileMainIndexRoute
+  '/profile': typeof WithAuthWithProfileProfileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginIndexRoute
   '/signin': typeof SigninIndexRoute
   '/main': typeof WithAuthWithProfileMainIndexRoute
+  '/profile': typeof WithAuthWithProfileProfileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -66,12 +75,13 @@ export interface FileRoutesById {
   '/login/': typeof LoginIndexRoute
   '/signin/': typeof SigninIndexRoute
   '/_withAuth/_withProfile/main/': typeof WithAuthWithProfileMainIndexRoute
+  '/_withAuth/_withProfile/profile/': typeof WithAuthWithProfileProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signin' | '/main'
+  fullPaths: '/' | '/login' | '/signin' | '/main' | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signin' | '/main'
+  to: '/' | '/login' | '/signin' | '/main' | '/profile'
   id:
     | '__root__'
     | '/'
@@ -80,6 +90,7 @@ export interface FileRouteTypes {
     | '/login/'
     | '/signin/'
     | '/_withAuth/_withProfile/main/'
+    | '/_withAuth/_withProfile/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -126,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WithAuthWithProfileRouteImport
       parentRoute: typeof WithAuthRoute
     }
+    '/_withAuth/_withProfile/profile/': {
+      id: '/_withAuth/_withProfile/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof WithAuthWithProfileProfileIndexRouteImport
+      parentRoute: typeof WithAuthWithProfileRoute
+    }
     '/_withAuth/_withProfile/main/': {
       id: '/_withAuth/_withProfile/main/'
       path: '/main'
@@ -138,10 +156,12 @@ declare module '@tanstack/react-router' {
 
 interface WithAuthWithProfileRouteChildren {
   WithAuthWithProfileMainIndexRoute: typeof WithAuthWithProfileMainIndexRoute
+  WithAuthWithProfileProfileIndexRoute: typeof WithAuthWithProfileProfileIndexRoute
 }
 
 const WithAuthWithProfileRouteChildren: WithAuthWithProfileRouteChildren = {
   WithAuthWithProfileMainIndexRoute: WithAuthWithProfileMainIndexRoute,
+  WithAuthWithProfileProfileIndexRoute: WithAuthWithProfileProfileIndexRoute,
 }
 
 const WithAuthWithProfileRouteWithChildren =
