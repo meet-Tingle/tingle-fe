@@ -10,7 +10,7 @@ import * as styles from "./Radio.css";
 export interface RadioProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
   label: ReactNode;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "fit";
   error?: boolean;
 }
 

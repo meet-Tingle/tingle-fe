@@ -87,19 +87,33 @@ export const radioInput = style({
 });
 
 export const radioText = style({
-  flex: 1,
   userSelect: "none",
 });
 
 export const sizeVariants = styleVariants({
   sm: {
     padding: "8px",
+    flex: 1,
+    minWidth: 0,
+    justifyContent: "flex-start",
   },
   md: {
     padding: "12px",
+    flex: 1,
+    minWidth: 0,
+    justifyContent: "flex-start",
   },
   lg: {
     padding: "16px",
+    flex: 1,
+    minWidth: 0,
+    justifyContent: "flex-start",
+  },
+  fit: {
+    padding: "12px",
+    flex: "0 0 auto",
+    width: "fit-content",
+    justifyContent: "flex-start",
   },
 });
 
