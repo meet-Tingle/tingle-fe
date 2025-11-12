@@ -12,7 +12,8 @@ export const appContainer = style({
   margin: "0 auto",
   minWidth: `${MIN_WIDTH}px`,
   maxWidth: `${MAX_WIDTH}px`,
-  minHeight: "100dvh",
+  height: "100dvh",
+  overflow: "auto",
   "@media": {
     [`(min-width: ${MAX_WIDTH + 1}px)`]: {
       boxShadow: "0 0 20px rgba(0, 0, 0, 0.1)",

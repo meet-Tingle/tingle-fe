@@ -1,18 +1,18 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
 // import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { ToastProvider } from "@tingle/ui";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { AuthProvider } from "@/provider/AuthProvider";
+import DesignProvider from "@/provider/DesignProvider";
 import { appContainer } from "./root.css";
 
 const RootLayout = () => {
   return (
-    <ToastProvider>
+    <DesignProvider>
       <div className={appContainer}>
         <AuthProvider>
           <Outlet />
         </AuthProvider>
       </div>
-    </ToastProvider>
+    </DesignProvider>
   );
 };
 

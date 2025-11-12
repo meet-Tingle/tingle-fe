@@ -1,9 +1,9 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Text } from "@tingle/ui";
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Profile = {
   id: string;
+  name?: string;
 };
 
 const ProfileContext = createContext<{
@@ -12,37 +12,45 @@ const ProfileContext = createContext<{
   profile: null,
 });
 
-// TODO: RQ 도입 후 Suspense 처리
 export const ProfileProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
+  const [isInitialized, setIsInitialized] = useState(false);
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<Nullable<Profile>>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [profile, _setProfile] = useState<Nullable<Profile>>(null);
+  const [loadingPromise, setLoadingPromise] = useState<Promise<void> | null>(
+    null,
+  );
 
   useEffect(() => {
-    const profile = {
+    const _mockProfile = {
       id: "test",
     };
-    setProfile(profile);
-    setIsLoading(false);
+    const promise = new Promise<void>((resolve) => {
+      setTimeout(() => {
+        // setProfile(mockProfile);
+        setLoadingPromise(null);
+        setIsInitialized(true);
+        resolve();
+      }, 3000);
+    });
+    setLoadingPromise(promise);
   }, []);
 
   useEffect(() => {
-    if (!isLoading && !profile) {
-      navigate({ to: "/profile" });
+    if (!isInitialized) return;
+    if (profile) {
+      navigate({ to: "/main" });
     }
-  }, [profile, isLoading, navigate]);
+  }, [profile, navigate]);
 
-  if (isLoading) {
-    return (
-      <Text size="md" weight="bold" color="gray_600" align="center">
-        Loading...
-      </Text>
-    );
+  if (loadingPromise) {
+    throw loadingPromise;
   }
+
+  if (!isInitialized) return null;
 
   return (
     <ProfileContext.Provider value={{ profile }}>
