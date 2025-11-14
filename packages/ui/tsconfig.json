@@ -1,15 +1,10 @@
 {
   "extends": "../../tsconfig.app.json",
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "module": "esnext",
-    "target": "es6",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-    "noEmit": true
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true
   },
-  "include": ["./**/*"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["index.ts", "components/**/*", "token/**/*", "foundations/**/*"],
+  "exclude": ["dist", "node_modules", "**/*.stories.tsx", "**/*.stories.ts"]
 }

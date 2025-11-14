@@ -4,10 +4,17 @@
     "baseUrl": ".",
     "types": ["react", "node"],
     "paths": {
-      "@tingle/ui": ["../../packages/ui"],
       "@/*": ["./src/*"],
-      "@pages/*": ["./src/pages/*"]
+      "@pages/*": ["./src/pages/*"],
+      "@api/*": ["./src/api/*"],
+      "@tingle/ui": ["../../packages/ui/index.ts"],
+      "@tingle/api": ["../../packages/api/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "../../packages/api/index.ts",
+    "../../packages/ui/index.ts"
+  ],
+  "exclude": ["dist", "node_modules"]
 }

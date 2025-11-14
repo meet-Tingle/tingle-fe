@@ -17,6 +17,7 @@
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-router": "^1.133.27",
     "@tanstack/react-router-devtools": "^1.133.27",
+    "@tingle/api": "workspace:*",
     "@tingle/ui": "workspace:*",
     "@vanilla-extract/css": "catalog:",
     "jotai": "^2.15.0",
