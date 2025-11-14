@@ -2,7 +2,6 @@ import type { AuthManagerInterface } from "@tingle/api";
 
 class AuthManager implements AuthManagerInterface {
   private _accessToken: string | null = null;
-  private _refreshToken: string | null = null;
 
   public get isAuthenticated(): boolean {
     return this._accessToken !== null;
@@ -13,7 +12,7 @@ class AuthManager implements AuthManagerInterface {
   }
 
   public get refreshToken() {
-    return this._refreshToken;
+    return getRefreshToken();
   }
 
   public setAccessToken(accessToken: string) {
@@ -21,13 +20,26 @@ class AuthManager implements AuthManagerInterface {
   }
 
   public setRefreshToken(refreshToken: string) {
-    this._refreshToken = refreshToken;
+    setRefreshToken(refreshToken);
   }
 
   public clearAccessToken() {
     this._accessToken = null;
-    this._refreshToken = null;
+    clearRefreshToken();
   }
 }
+
+// TODO: 추후 실제 프로덕트에는 Coockie를 사용하여 구현 필요
+const getRefreshToken = () => {
+  return localStorage.getItem("refreshToken") ?? null;
+};
+
+const setRefreshToken = (refreshToken: string) => {
+  localStorage.setItem("refreshToken", refreshToken);
+};
+
+const clearRefreshToken = () => {
+  localStorage.removeItem("refreshToken");
+};
 
 export const authManager = new AuthManager();
