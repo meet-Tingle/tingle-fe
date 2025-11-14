@@ -37,18 +37,30 @@ export function createApiClient(
 
             if (!isRetry) {
               try {
-                const newAccessToken = await onUnauthorized(authManager);
-                if (newAccessToken) {
-                  authManager.setAccessToken(newAccessToken);
+                const result = await onUnauthorized(authManager);
+
+                if (result?.accessToken && result.refreshToken) {
+                  authManager.setTokens(
+                    result.accessToken,
+                    result.refreshToken,
+                  );
                   request.headers.set(
                     "Authorization",
-                    `Bearer ${newAccessToken}`,
+                    `Bearer ${result.accessToken}`,
                   );
                   request.headers.set("X-Retry-Request", "true");
                   return ky(request, options);
                 }
+
+                authManager.clearTokens();
+                const error: ApiError = new Error(
+                  "Token reissue failed. Please login again.",
+                );
+                error.status = 401;
+                error.response = response;
+                throw error;
               } catch {
-                authManager.clearAccessToken();
+                authManager.clearTokens();
                 const error: ApiError = new Error(
                   "Token reissue failed. Please login again.",
                 );

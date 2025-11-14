@@ -15,15 +15,12 @@ class AuthManager implements AuthManagerInterface {
     return getRefreshToken();
   }
 
-  public setAccessToken(accessToken: string) {
+  public setTokens(accessToken: string, refreshToken: string) {
     this._accessToken = accessToken;
-  }
-
-  public setRefreshToken(refreshToken: string) {
     setRefreshToken(refreshToken);
   }
 
-  public clearAccessToken() {
+  public clearTokens() {
     this._accessToken = null;
     clearRefreshToken();
   }

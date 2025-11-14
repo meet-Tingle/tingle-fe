@@ -1,7 +1,7 @@
 import type { AuthManagerInterface } from "@tingle/api";
 
 interface ReissueResponse {
-  accessToken: string;
+  accessToken?: string;
   refreshToken?: string;
 }
 
@@ -15,7 +15,7 @@ interface ReissueResponse {
  */
 export async function reissueToken(
   authManager: AuthManagerInterface,
-): Promise<string | null> {
+): Promise<{ accessToken?: string; refreshToken?: string } | null> {
   const refreshToken = authManager.refreshToken;
 
   if (!refreshToken) {
@@ -41,11 +41,11 @@ export async function reissueToken(
 
     const data: ReissueResponse = await response.json();
 
-    if (data.refreshToken) {
-      authManager.setRefreshToken(data.refreshToken);
+    if (!data.accessToken || !data.refreshToken) {
+      return null;
     }
 
-    return data.accessToken;
+    return data;
   } catch (error) {
     console.error("Token reissue failed:", error);
     return null;

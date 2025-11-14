@@ -1,11 +1,16 @@
 import type { KyInstance, Options as KyOptions } from "ky";
 import type { AuthManagerInterface } from "./auth/AuthManagerInterface";
 
+type ReissueTokenResult = {
+  accessToken?: string;
+  refreshToken?: string;
+};
+
 export interface ApiClientOptions extends KyOptions {
   baseUrl: string;
   onUnauthorized?: (
     authManager: AuthManagerInterface,
-  ) => Promise<string | null>;
+  ) => Promise<ReissueTokenResult | null>;
 }
 
 export interface ApiError extends Error {
