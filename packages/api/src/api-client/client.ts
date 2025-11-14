@@ -1,13 +1,16 @@
 import ky, { type KyInstance, type Options as KyOptions } from "ky";
-import type { ApiClient, ApiClientOptions, ApiError } from "./types";
+import type { AuthManagerInterface } from "../auth/AuthManagerInterface";
+import type { ApiClient, ApiClientOptions, ApiError } from "../types";
 
 const TIMEOUT = 30000;
 
+export type ApiClientType = ReturnType<typeof createApiClient>;
+
 export function createApiClient(
   options: ApiClientOptions,
-  getToken: () => string | null,
+  authManager: AuthManagerInterface,
 ): ApiClient {
-  const { baseUrl, ...kyOptions } = options;
+  const { baseUrl, onUnauthorized, ...kyOptions } = options;
 
   const instance: KyInstance = ky.create({
     prefixUrl: baseUrl,
@@ -20,14 +23,42 @@ export function createApiClient(
     hooks: {
       beforeRequest: [
         (request) => {
-          const token = getToken();
-          if (token) {
-            request.headers.set("Authorization", `Bearer ${token}`);
+          const accessToken = authManager.accessToken;
+          if (accessToken) {
+            request.headers.set("Authorization", `Bearer ${accessToken}`);
           }
         },
       ],
       afterResponse: [
-        async (_request, _options, response) => {
+        async (request, options, response) => {
+          // 401 Unauthorized: onUnauthorized 콜백 호출
+          if (response.status === 401 && onUnauthorized) {
+            const isRetry = request.headers.get("X-Retry-Request");
+
+            if (!isRetry) {
+              try {
+                const newAccessToken = await onUnauthorized(authManager);
+                if (newAccessToken) {
+                  authManager.setAccessToken(newAccessToken);
+                  request.headers.set(
+                    "Authorization",
+                    `Bearer ${newAccessToken}`,
+                  );
+                  request.headers.set("X-Retry-Request", "true");
+                  return ky(request, options);
+                }
+              } catch {
+                authManager.clearAccessToken();
+                const error: ApiError = new Error(
+                  "Token reissue failed. Please login again.",
+                );
+                error.status = 401;
+                error.response = response;
+                throw error;
+              }
+            }
+          }
+
           if (!response.ok) {
             const error: ApiError = new Error(
               `API Error: ${response.status} ${response.statusText}`,
@@ -36,6 +67,7 @@ export function createApiClient(
             error.response = response;
             throw error;
           }
+
           return response;
         },
       ],

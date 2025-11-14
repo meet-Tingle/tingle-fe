@@ -1,7 +1,11 @@
 import type { KyInstance, Options as KyOptions } from "ky";
+import type { AuthManagerInterface } from "./auth/AuthManagerInterface";
 
 export interface ApiClientOptions extends KyOptions {
   baseUrl: string;
+  onUnauthorized?: (
+    authManager: AuthManagerInterface,
+  ) => Promise<string | null>;
 }
 
 export interface ApiError extends Error {
