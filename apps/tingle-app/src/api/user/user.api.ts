@@ -1,12 +1,12 @@
 import ApiClientInstance from "../ApiClientInstance";
 
-type LoginResponse = {
+type UserResponse = {
   access: string;
   refresh: string;
 };
 
 export async function login(email: string, password: string) {
-  const response = await ApiClientInstance.post<LoginResponse>("users/login/", {
+  const response = await ApiClientInstance.post<UserResponse>("users/login/", {
     json: {
       email,
       password,

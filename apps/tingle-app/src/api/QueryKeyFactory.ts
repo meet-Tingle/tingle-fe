@@ -1,5 +1,5 @@
-import { LoginQueryKeys } from "./login/login.query";
+import { UserQueryKeys } from "./user/user.query";
 
 export const QueryKeys = {
-  ...LoginQueryKeys,
+  ...UserQueryKeys,
 } as const;
