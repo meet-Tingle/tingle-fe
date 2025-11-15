@@ -20,3 +20,11 @@ export const appContainer = style({
     },
   },
 });
+
+export const loadingContainer = style({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "16px",
+  padding: "40px",
+});

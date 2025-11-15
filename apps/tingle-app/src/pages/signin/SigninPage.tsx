@@ -77,7 +77,7 @@ const FormContainer = () => {
       registerApi(email, password),
     onSuccess: () => {
       toast("회원가입이 완료되었습니다");
-      router.navigate({ to: "/login" });
+      router.navigate({ to: "/verification" });
     },
     onError: (error) => {
       console.error("Signup failed:", error);

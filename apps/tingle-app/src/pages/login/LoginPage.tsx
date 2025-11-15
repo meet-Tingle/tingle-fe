@@ -1,7 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { Link, useRouter } from "@tanstack/react-router";
-import { Button, Input, Spinner, Text, useToast } from "@tingle/ui";
-import { Suspense, useCallback } from "react";
+import { ApiError } from "@tingle/api";
+import { Button, Input, Text, useToast } from "@tingle/ui";
+import { useSetAtom } from "jotai";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { QueryKeys } from "@/api/QueryKeyFactory";
@@ -9,6 +11,7 @@ import { login } from "@/api/user/user.api";
 import Slogan from "@/components/slogan/Slogan";
 import { useAuth } from "@/provider/AuthProvider";
 import { customResolver } from "@/utils/zodCustomResolver";
+import { verificationEmailAtom } from "../verification/VerificationPage";
 import * as styles from "./LoginPage.css";
 
 const loginSchema = z.object({
@@ -28,18 +31,7 @@ export default function LoginPage() {
   return (
     <div className={styles.container}>
       <Slogan />
-      <Suspense
-        fallback={
-          <div className={styles.loadingContainer}>
-            <Spinner size="large" />
-            <Text size="md" weight="medium" color="gray_600">
-              로그인 중...
-            </Text>
-          </div>
-        }
-      >
-        <FormContainer />
-      </Suspense>
+      <FormContainer />
     </div>
   );
 }
@@ -48,9 +40,11 @@ const FormContainer = () => {
   const router = useRouter();
   const { setUser } = useAuth();
   const { toast } = useToast();
+  const setVerificationEmail = useSetAtom(verificationEmailAtom);
 
   const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
@@ -67,8 +61,15 @@ const FormContainer = () => {
       router.navigate({ to: "/profile" });
     },
     onError: (error) => {
-      console.error("Login failed:", error);
-      toast("로그인에 실패했습니다", 2000);
+      if (error instanceof ApiError) {
+        if (error.status === 400) {
+          const email = getValues("email");
+          setVerificationEmail(email);
+          router.navigate({ to: "/verification" });
+          return;
+        }
+      }
+      toast("로그인에 실패했습니다");
     },
   });
 
