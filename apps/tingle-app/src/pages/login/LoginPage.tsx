@@ -59,7 +59,7 @@ const FormContainer = () => {
   });
 
   const { mutate: loginMutate, isPending } = useMutation({
-    mutationKey: QueryKeys.login.mutation(),
+    mutationKey: QueryKeys.user.login(),
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       login(email, password),
     onSuccess: (response) => {

@@ -1,6 +1,7 @@
 export const UserQueryKeys = {
-  login: {
+  user: {
     all: ["user"] as const,
-    mutation: () => [...UserQueryKeys.login.all, "mutation"] as const,
+    login: () => [...UserQueryKeys.user.all, "login"] as const,
+    register: () => [...UserQueryKeys.user.all, "register"] as const,
   },
 };
