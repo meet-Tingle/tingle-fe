@@ -1,20 +1,22 @@
+import { useMutation } from "@tanstack/react-query";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Button, Input, Spinner, Text, useToast } from "@tingle/ui";
-import { Suspense, useCallback, useState } from "react";
+import { Suspense, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { QueryKeys } from "@/api/QueryKeyFactory";
+import { register as registerApi } from "@/api/user/user.api";
 import Slogan from "@/components/slogan/Slogan";
 import { customResolver } from "@/utils/zodCustomResolver";
 import * as styles from "./SigninPage.css";
 
 const signinSchema = z
   .object({
-    userId: z
+    email: z
       .string()
-      .min(1, "아이디를 입력해주세요")
-      .min(4, "아이디는 최소 4자리 이상이어야 합니다")
-      .regex(/^[a-zA-Z0-9_]+$/, "아이디는 영문, 숫자, _만 사용 가능합니다"),
-    idChecked: z.boolean().default(false),
+      .min(1, "이메일을 입력해주세요")
+      .email("유효한 이메일 주소를 입력해주세요"),
+    emailChecked: z.boolean().default(false),
     password: z
       .string()
       .min(1, "비밀번호를 입력해주세요")
@@ -53,9 +55,6 @@ export default function SigninPage() {
 }
 
 const FormContainer = () => {
-  const [signinPromise, setSigninPromise] = useState<Promise<void> | null>(
-    null,
-  );
   const router = useRouter();
   const { toast } = useToast();
 
@@ -72,59 +71,62 @@ const FormContainer = () => {
     mode: "onBlur",
   });
 
-  const handleIdCheck = useCallback(() => {
-    const userId = getValues("userId");
-    if (!userId || userId.length < 4) {
-      setError("userId", {
+  const { mutate: signupMutate, isPending } = useMutation({
+    mutationKey: QueryKeys.user.register(),
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      registerApi(email, password),
+    onSuccess: () => {
+      toast("회원가입이 완료되었습니다");
+      router.navigate({ to: "/login" });
+    },
+    onError: (error) => {
+      console.error("Signup failed:", error);
+      toast("회원가입에 실패했습니다");
+    },
+  });
+
+  const handleEmailCheck = useCallback(() => {
+    const email = getValues("email");
+    if (!email) {
+      setError("email", {
         type: "manual",
-        message: "아이디를 4자 이상 입력해주세요",
+        message: "이메일을 입력해주세요",
       });
-      setValue("idChecked", false);
+      setValue("emailChecked", false);
       return;
     }
 
     // TODO: 실제 중복체크 API 호출
     const isAvailable = Math.random() > 0.5;
     if (isAvailable) {
-      clearErrors("userId");
-      setError("userId", {
+      clearErrors("email");
+      setError("email", {
         type: "success",
-        message: "사용 가능한 아이디입니다",
+        message: "사용 가능한 이메일입니다",
       });
-      setValue("idChecked", true);
+      setValue("emailChecked", true);
     } else {
-      setError("userId", {
+      setError("email", {
         type: "manual",
-        message: "이미 사용 중인 아이디입니다",
+        message: "이미 사용 중인 이메일입니다",
       });
-      setValue("idChecked", false);
+      setValue("emailChecked", false);
     }
   }, [getValues, setError, clearErrors, setValue]);
 
   const onSubmit = useCallback(
     (data: SigninFormData) => {
-      if (!data.idChecked) {
-        setError("idChecked", {
+      if (!data.emailChecked) {
+        setError("emailChecked", {
           type: "manual",
-          message: "아이디 중복 확인을 해주세요",
+          message: "이메일 중복 확인을 해주세요",
         });
         return;
       }
-      const promise = new Promise<void>((resolve) =>
-        setTimeout(() => {
-          router.navigate({ to: "/login" });
-          toast("회원가입이 성공적으로 완료되었습니다");
-          resolve();
-        }, 3000),
-      );
-      setSigninPromise(promise);
+      signupMutate({ email: data.email, password: data.password });
     },
-    [router],
+    [signupMutate, setError],
   );
-
-  if (signinPromise) {
-    throw signinPromise;
-  }
 
   return (
     <form
@@ -133,38 +135,40 @@ const FormContainer = () => {
       noValidate
     >
       <div className={styles.inputWrapper}>
-        <label htmlFor="userId" className={styles.label}>
-          아이디
+        <label htmlFor="email" className={styles.label}>
+          이메일
         </label>
         <div className={styles.inputWithButton}>
           <Input
-            id="userId"
-            type="text"
-            placeholder="영문, 숫자, _ 사용 가능"
+            id="email"
+            type="email"
+            placeholder="example@domain.com"
             size="full"
-            error={!!errors.userId && errors.userId.type !== "success"}
-            {...register("userId", {
-              onChange: () => setValue("idChecked", false),
+            error={!!errors.email && errors.email.type !== "success"}
+            disabled={isPending}
+            {...register("email", {
+              onChange: () => setValue("emailChecked", false),
             })}
           />
           <Button
             type="button"
             variant="outline"
             size="fit"
-            onClick={handleIdCheck}
+            onClick={handleEmailCheck}
+            disabled={isPending}
           >
             중복확인
           </Button>
         </div>
-        {errors.userId && (
+        {errors.email && (
           <span
             className={
-              errors.userId.type === "success"
+              errors.email.type === "success"
                 ? styles.successMessage
                 : styles.errorMessage
             }
           >
-            {errors.userId.message}
+            {errors.email.message}
           </span>
         )}
       </div>
@@ -179,6 +183,7 @@ const FormContainer = () => {
           placeholder="비밀번호를 입력하세요"
           size="full"
           error={!!errors.password}
+          disabled={isPending}
           {...register("password")}
         />
         <div className={styles.passwordRules}>
@@ -199,6 +204,7 @@ const FormContainer = () => {
           placeholder="비밀번호를 다시 입력하세요"
           size="full"
           error={!!errors.passwordConfirm}
+          disabled={isPending}
           {...register("passwordConfirm")}
         />
         {errors.passwordConfirm && (
@@ -208,8 +214,13 @@ const FormContainer = () => {
         )}
       </div>
 
-      <Button type="submit" variant="primary" size="default">
-        회원가입
+      <Button
+        type="submit"
+        variant="primary"
+        size="default"
+        disabled={isPending}
+      >
+        {isPending ? "가입 중..." : "회원가입"}
       </Button>
 
       <div className={styles.linkText}>

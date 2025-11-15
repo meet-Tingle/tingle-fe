@@ -1,19 +1,21 @@
+import { useMutation } from "@tanstack/react-query";
 import { Link, useRouter } from "@tanstack/react-router";
-import { Button, Input, Spinner, Text } from "@tingle/ui";
-import { Suspense, useCallback, useState } from "react";
+import { Button, Input, Spinner, Text, useToast } from "@tingle/ui";
+import { Suspense, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { QueryKeys } from "@/api/QueryKeyFactory";
+import { login } from "@/api/user/user.api";
 import Slogan from "@/components/slogan/Slogan";
 import { useAuth } from "@/provider/AuthProvider";
 import { customResolver } from "@/utils/zodCustomResolver";
 import * as styles from "./LoginPage.css";
 
 const loginSchema = z.object({
-  userId: z
+  email: z
     .string()
-    .min(1, "아이디를 입력해주세요")
-    .min(4, "아이디는 최소 4자리 이상이어야 합니다")
-    .regex(/^[a-zA-Z0-9_]+$/, "아이디는 영문, 숫자, _만 사용 가능합니다"),
+    .min(1, "이메일을 입력해주세요")
+    .email("유효한 이메일 주소를 입력해주세요"),
   password: z
     .string()
     .min(1, "비밀번호를 입력해주세요")
@@ -45,7 +47,7 @@ export default function LoginPage() {
 const FormContainer = () => {
   const router = useRouter();
   const { setUser } = useAuth();
-  const [loginPromise, setLoginPromise] = useState<Promise<void> | null>(null);
+  const { toast } = useToast();
 
   const {
     register,
@@ -56,51 +58,52 @@ const FormContainer = () => {
     mode: "onBlur",
   });
 
-  const onSubmit = useCallback(
-    (data: LoginFormData, e?: React.BaseSyntheticEvent) => {
-      e?.preventDefault();
-      const promise = new Promise<void>((resolve) =>
-        setTimeout(() => {
-          setUser({ id: data.userId });
-          setLoginPromise(null);
-          resolve();
-        }, 3000),
-      );
-      setLoginPromise(promise);
+  const { mutate: loginMutate, isPending } = useMutation({
+    mutationKey: QueryKeys.user.login(),
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      login(email, password),
+    onSuccess: (response) => {
+      setUser({ id: response.access });
+      router.navigate({ to: "/profile" });
     },
-    [router, setUser],
+    onError: (error) => {
+      console.error("Login failed:", error);
+      toast("로그인에 실패했습니다", 2000);
+    },
+  });
+
+  const onSubmit = useCallback(
+    (data: LoginFormData) => {
+      loginMutate({ email: data.email, password: data.password });
+    },
+    [loginMutate],
   );
 
   const handleBack = useCallback(() => {
     router.navigate({ to: "/" });
   }, [router]);
 
-  if (loginPromise) {
-    throw loginPromise;
-  }
-
   return (
     <form
-      onSubmit={(e) => {
-        handleSubmit(onSubmit)(e);
-      }}
+      onSubmit={handleSubmit(onSubmit)}
       className={styles.formContainer}
       noValidate
     >
       <div className={styles.inputWrapper}>
-        <label htmlFor="userId" className={styles.label}>
-          아이디
+        <label htmlFor="email" className={styles.label}>
+          이메일
         </label>
         <Input
-          id="userId"
-          type="text"
-          placeholder="영문, 숫자, _ 사용 가능"
+          id="email"
+          type="email"
+          placeholder="example@domain.com"
           size="full"
-          error={!!errors.userId}
-          {...register("userId")}
+          error={!!errors.email}
+          disabled={isPending}
+          {...register("email")}
         />
-        {errors.userId && (
-          <span className={styles.errorMessage}>{errors.userId.message}</span>
+        {errors.email && (
+          <span className={styles.errorMessage}>{errors.email.message}</span>
         )}
       </div>
 
@@ -114,6 +117,7 @@ const FormContainer = () => {
           placeholder="비밀번호를 입력하세요"
           size="full"
           error={!!errors.password}
+          disabled={isPending}
           {...register("password")}
         />
         {errors.password && (
@@ -122,14 +126,20 @@ const FormContainer = () => {
       </div>
 
       <div className={styles.buttonGroup}>
-        <Button type="submit" variant="primary" size="default">
-          로그인
+        <Button
+          type="submit"
+          variant="primary"
+          size="default"
+          disabled={isPending}
+        >
+          {isPending ? "로그인 중..." : "로그인"}
         </Button>
         <Button
           type="button"
           variant="ghost"
           size="default"
           onClick={handleBack}
+          disabled={isPending}
         >
           돌아가기
         </Button>

@@ -11,7 +11,9 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@pages": path.resolve(__dirname, "./src/pages"),
+      "@api": path.resolve(__dirname, "./src/api"),
       "@tingle/ui": path.resolve(__dirname, "../../packages/ui/index.ts"),
+      "@tingle/api": path.resolve(__dirname, "../../packages/api/index.ts"),
     },
   },
   plugins: [

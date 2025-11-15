@@ -18,7 +18,10 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@tingle/ui": ["./packages/ui"]
+      "@tingle/ui": ["./packages/ui/index.ts"],
+      "@tingle/ui/*": ["./packages/ui/*"],
+      "@tingle/api": ["./packages/api/index.ts"],
+      "@tingle/api/*": ["./packages/api/*"]
     },
 
     /* Linting */
@@ -28,5 +31,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["apps/*/src", "packages/*/src", "packages/*"]
+
+  "exclude": ["**/node_modules", "**/dist", "**/.turbo", "**/build"]
 }
