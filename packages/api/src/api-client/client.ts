@@ -1,6 +1,6 @@
 import ky, { type KyInstance, type Options as KyOptions } from "ky";
 import type { AuthManagerInterface } from "../auth/AuthManagerInterface";
-import type { ApiClient, ApiClientOptions, ApiError } from "../types";
+import type { ApiClient, ApiClientOptions } from "../types";
 
 const TIMEOUT = 30000;
 
@@ -53,31 +53,30 @@ export function createApiClient(
                 }
 
                 authManager.clearTokens();
-                const error: ApiError = new Error(
+                const error = new ApiError(
                   "Token reissue failed. Please login again.",
+                  401,
+                  response,
                 );
-                error.status = 401;
-                error.response = response;
                 throw error;
               } catch {
                 authManager.clearTokens();
-                const error: ApiError = new Error(
+                const error = new ApiError(
                   "Token reissue failed. Please login again.",
+                  401,
+                  response,
                 );
-                error.status = 401;
-                error.response = response;
                 throw error;
               }
             }
           }
 
           if (!response.ok) {
-            const error: ApiError = new Error(
+            throw new ApiError(
               `API Error: ${response.status} ${response.statusText}`,
+              response.status,
+              response,
             );
-            error.status = response.status;
-            error.response = response;
-            throw error;
           }
 
           return response;
@@ -117,4 +116,14 @@ export function createApiClient(
       return instance;
     },
   };
+}
+
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public readonly status: number,
+    public readonly response: Response,
+  ) {
+    super(message);
+  }
 }

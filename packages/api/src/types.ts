@@ -13,11 +13,6 @@ export interface ApiClientOptions extends KyOptions {
   ) => Promise<ReissueTokenResult | null>;
 }
 
-export interface ApiError extends Error {
-  status?: number;
-  response?: Response;
-}
-
 export interface ApiClient {
   get<T = unknown>(url: string, options?: KyOptions): Promise<T>;
   post<T = unknown>(url: string, options?: KyOptions): Promise<T>;
