@@ -11,11 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WithAuthRouteImport } from './routes/_withAuth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VerificationIndexRouteImport } from './routes/verification/index'
 import { Route as SigninIndexRouteImport } from './routes/signin/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as WithAuthWithProfileRouteImport } from './routes/_withAuth/_withProfile'
-import { Route as WithAuthWithProfileProfileIndexRouteImport } from './routes/_withAuth/_withProfile/profile/index'
-import { Route as WithAuthWithProfileMainIndexRouteImport } from './routes/_withAuth/_withProfile/main/index'
+import { Route as WithAuthProfileIndexRouteImport } from './routes/_withAuth/profile/index'
+import { Route as WithAuthMainIndexRouteImport } from './routes/_withAuth/main/index'
 
 const WithAuthRoute = WithAuthRouteImport.update({
   id: '/_withAuth',
@@ -24,6 +24,11 @@ const WithAuthRoute = WithAuthRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerificationIndexRoute = VerificationIndexRouteImport.update({
+  id: '/verification/',
+  path: '/verification/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SigninIndexRoute = SigninIndexRouteImport.update({
@@ -36,61 +41,57 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WithAuthWithProfileRoute = WithAuthWithProfileRouteImport.update({
-  id: '/_withProfile',
+const WithAuthProfileIndexRoute = WithAuthProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
   getParentRoute: () => WithAuthRoute,
 } as any)
-const WithAuthWithProfileProfileIndexRoute =
-  WithAuthWithProfileProfileIndexRouteImport.update({
-    id: '/profile/',
-    path: '/profile/',
-    getParentRoute: () => WithAuthWithProfileRoute,
-  } as any)
-const WithAuthWithProfileMainIndexRoute =
-  WithAuthWithProfileMainIndexRouteImport.update({
-    id: '/main/',
-    path: '/main/',
-    getParentRoute: () => WithAuthWithProfileRoute,
-  } as any)
+const WithAuthMainIndexRoute = WithAuthMainIndexRouteImport.update({
+  id: '/main/',
+  path: '/main/',
+  getParentRoute: () => WithAuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginIndexRoute
   '/signin': typeof SigninIndexRoute
-  '/main': typeof WithAuthWithProfileMainIndexRoute
-  '/profile': typeof WithAuthWithProfileProfileIndexRoute
+  '/verification': typeof VerificationIndexRoute
+  '/main': typeof WithAuthMainIndexRoute
+  '/profile': typeof WithAuthProfileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginIndexRoute
   '/signin': typeof SigninIndexRoute
-  '/main': typeof WithAuthWithProfileMainIndexRoute
-  '/profile': typeof WithAuthWithProfileProfileIndexRoute
+  '/verification': typeof VerificationIndexRoute
+  '/main': typeof WithAuthMainIndexRoute
+  '/profile': typeof WithAuthProfileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_withAuth': typeof WithAuthRouteWithChildren
-  '/_withAuth/_withProfile': typeof WithAuthWithProfileRouteWithChildren
   '/login/': typeof LoginIndexRoute
   '/signin/': typeof SigninIndexRoute
-  '/_withAuth/_withProfile/main/': typeof WithAuthWithProfileMainIndexRoute
-  '/_withAuth/_withProfile/profile/': typeof WithAuthWithProfileProfileIndexRoute
+  '/verification/': typeof VerificationIndexRoute
+  '/_withAuth/main/': typeof WithAuthMainIndexRoute
+  '/_withAuth/profile/': typeof WithAuthProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signin' | '/main' | '/profile'
+  fullPaths: '/' | '/login' | '/signin' | '/verification' | '/main' | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signin' | '/main' | '/profile'
+  to: '/' | '/login' | '/signin' | '/verification' | '/main' | '/profile'
   id:
     | '__root__'
     | '/'
     | '/_withAuth'
-    | '/_withAuth/_withProfile'
     | '/login/'
     | '/signin/'
-    | '/_withAuth/_withProfile/main/'
-    | '/_withAuth/_withProfile/profile/'
+    | '/verification/'
+    | '/_withAuth/main/'
+    | '/_withAuth/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -98,6 +99,7 @@ export interface RootRouteChildren {
   WithAuthRoute: typeof WithAuthRouteWithChildren
   LoginIndexRoute: typeof LoginIndexRoute
   SigninIndexRoute: typeof SigninIndexRoute
+  VerificationIndexRoute: typeof VerificationIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +118,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verification/': {
+      id: '/verification/'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signin/': {
       id: '/signin/'
       path: '/signin'
@@ -130,49 +139,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_withAuth/_withProfile': {
-      id: '/_withAuth/_withProfile'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof WithAuthWithProfileRouteImport
-      parentRoute: typeof WithAuthRoute
-    }
-    '/_withAuth/_withProfile/profile/': {
-      id: '/_withAuth/_withProfile/profile/'
+    '/_withAuth/profile/': {
+      id: '/_withAuth/profile/'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof WithAuthWithProfileProfileIndexRouteImport
-      parentRoute: typeof WithAuthWithProfileRoute
+      preLoaderRoute: typeof WithAuthProfileIndexRouteImport
+      parentRoute: typeof WithAuthRoute
     }
-    '/_withAuth/_withProfile/main/': {
-      id: '/_withAuth/_withProfile/main/'
+    '/_withAuth/main/': {
+      id: '/_withAuth/main/'
       path: '/main'
       fullPath: '/main'
-      preLoaderRoute: typeof WithAuthWithProfileMainIndexRouteImport
-      parentRoute: typeof WithAuthWithProfileRoute
+      preLoaderRoute: typeof WithAuthMainIndexRouteImport
+      parentRoute: typeof WithAuthRoute
     }
   }
 }
 
-interface WithAuthWithProfileRouteChildren {
-  WithAuthWithProfileMainIndexRoute: typeof WithAuthWithProfileMainIndexRoute
-  WithAuthWithProfileProfileIndexRoute: typeof WithAuthWithProfileProfileIndexRoute
-}
-
-const WithAuthWithProfileRouteChildren: WithAuthWithProfileRouteChildren = {
-  WithAuthWithProfileMainIndexRoute: WithAuthWithProfileMainIndexRoute,
-  WithAuthWithProfileProfileIndexRoute: WithAuthWithProfileProfileIndexRoute,
-}
-
-const WithAuthWithProfileRouteWithChildren =
-  WithAuthWithProfileRoute._addFileChildren(WithAuthWithProfileRouteChildren)
-
 interface WithAuthRouteChildren {
-  WithAuthWithProfileRoute: typeof WithAuthWithProfileRouteWithChildren
+  WithAuthMainIndexRoute: typeof WithAuthMainIndexRoute
+  WithAuthProfileIndexRoute: typeof WithAuthProfileIndexRoute
 }
 
 const WithAuthRouteChildren: WithAuthRouteChildren = {
-  WithAuthWithProfileRoute: WithAuthWithProfileRouteWithChildren,
+  WithAuthMainIndexRoute: WithAuthMainIndexRoute,
+  WithAuthProfileIndexRoute: WithAuthProfileIndexRoute,
 }
 
 const WithAuthRouteWithChildren = WithAuthRoute._addFileChildren(
@@ -184,6 +175,7 @@ const rootRouteChildren: RootRouteChildren = {
   WithAuthRoute: WithAuthRouteWithChildren,
   LoginIndexRoute: LoginIndexRoute,
   SigninIndexRoute: SigninIndexRoute,
+  VerificationIndexRoute: VerificationIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
